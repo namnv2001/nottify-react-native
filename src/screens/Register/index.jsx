@@ -79,7 +79,7 @@ function Register() {
           )}
           name='password'
           rules={{
-            required: 'Password is required',
+            required: 'Password is required!',
             pattern: {
               value: passwordPattern,
               message:
