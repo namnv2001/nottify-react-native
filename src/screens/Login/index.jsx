@@ -1,14 +1,20 @@
-import { StyleSheet, View, Text, TextInput } from 'react-native'
+import {
+  StyleSheet,
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+} from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { useForm, Controller } from 'react-hook-form'
 import tw from 'twrnc'
 
-import { emailPattern, passwordPattern } from 'patterns/index'
+import { passwordPattern } from 'patterns/index'
 import CustomizeButton from 'components/CustomizeButton'
 import AppLogo from 'components/AppLogo'
 import Navigator from 'components/Navigator'
 
-function Register({ navigation }) {
+function Login({ navigation }) {
   const {
     handleSubmit,
     control,
@@ -17,7 +23,6 @@ function Register({ navigation }) {
   } = useForm({
     defaultValues: {
       username: '',
-      email: '',
       password: '',
     },
   })
@@ -47,27 +52,6 @@ function Register({ navigation }) {
         {errors.username && (
           <Text style={styles.error}>{errors.username.message}</Text>
         )}
-        {/* EMAIL */}
-        <Text style={styles.span}>Email</Text>
-        <Controller
-          control={control}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextInput
-              style={styles.input}
-              onBlur={onBlur}
-              onChangeText={(value) => onChange(value)}
-              value={value}
-            />
-          )}
-          name='email'
-          rules={{
-            required: 'Email is required',
-            pattern: { value: emailPattern, message: 'Wrong email validation' },
-          }}
-        />
-        {errors.email && (
-          <Text style={styles.error}>{errors.email.message}</Text>
-        )}
         {/* PASSWORD */}
         <Text style={styles.span}>Password</Text>
         <Controller
@@ -83,7 +67,7 @@ function Register({ navigation }) {
           )}
           name='password'
           rules={{
-            required: 'Password is required',
+            required: 'Password is required!',
             pattern: {
               value: passwordPattern,
               message:
@@ -94,41 +78,13 @@ function Register({ navigation }) {
         {errors.password && (
           <Text style={styles.error}>{errors.password.message}</Text>
         )}
-        {/* CONFIRM PASSWORD */}
-        <Text style={styles.span}>Confirm Password</Text>
-        <Controller
-          control={control}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextInput
-              secureTextEntry={true}
-              style={styles.input}
-              onBlur={onBlur}
-              onChangeText={(value) => onChange(value)}
-              value={value}
-            />
-          )}
-          name='confirmPassword'
-          rules={{
-            required: 'Confirm Password is required',
-            pattern: {
-              value: passwordPattern,
-              message:
-                'Password must contain at least eight characters, at least one letter and one number!',
-            },
-            validate: (value) =>
-              value === watch('password') || 'Passwords must match',
-          }}
-        />
-        {errors.confirmPassword && (
-          <Text style={styles.error}>{errors.confirmPassword.message}</Text>
-        )}
         <Navigator
           navigation={navigation}
-          text='Already has an account? Go to'
-          navigate='Login'
+          text="Doesn't have an account yet? Go to"
+          navigate='Register'
         />
         {/* SUBMIT */}
-        <CustomizeButton pressed={handleSubmit(onSubmit)} title='Register' />
+        <CustomizeButton pressed={handleSubmit(onSubmit)} title='Log in' />
       </View>
     </KeyboardAwareScrollView>
   )
@@ -155,4 +111,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default Register
+export default Login
