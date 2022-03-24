@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import Home from 'screens/Home'
 import Register from 'screens/Register'
 import Login from 'screens/Login'
+import Playlist from 'screens/Playlist'
 
 function App() {
   const Stack = createNativeStackNavigator()
@@ -10,7 +11,7 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName='Register'
+        initialRouteName='Playlist'
         screenOptions={{
           headerShown: false,
         }}
@@ -18,6 +19,7 @@ function App() {
         <Stack.Screen name='Register' component={Register} />
         <Stack.Screen name='Login' component={Login} />
         <Stack.Screen name='Home' component={Home} />
+        <Stack.Screen name='Playlist' component={Playlist} />
       </Stack.Navigator>
     </NavigationContainer>
   )
