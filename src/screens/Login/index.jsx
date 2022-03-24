@@ -1,9 +1,4 @@
-import {
-  StyleSheet,
-  View,
-  Text,
-  TextInput,
-} from 'react-native'
+import { StyleSheet, View, Text, TextInput } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { useForm, Controller } from 'react-hook-form'
 import tw from 'twrnc'
@@ -43,7 +38,7 @@ function Login({ navigation }) {
               value={value}
             />
           )}
-          name='username'
+          name="username"
           rules={{
             required: 'Username is required',
           }}
@@ -64,7 +59,7 @@ function Login({ navigation }) {
               value={value}
             />
           )}
-          name='password'
+          name="password"
           rules={{
             required: 'Password is required!',
             pattern: {
@@ -80,10 +75,10 @@ function Login({ navigation }) {
         <Navigator
           navigation={navigation}
           text="Doesn't have an account yet? Go to"
-          navigate='Register'
+          navigate="Register"
         />
         {/* SUBMIT */}
-        <CustomizeButton pressed={handleSubmit(onSubmit)} title='Log in' />
+        <CustomizeButton pressed={handleSubmit(onSubmit)} title="Log in" />
       </View>
     </KeyboardAwareScrollView>
   )

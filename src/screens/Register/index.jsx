@@ -39,7 +39,7 @@ function Register({ navigation }) {
               value={value}
             />
           )}
-          name='username'
+          name="username"
           rules={{
             required: 'Username is required',
           }}
@@ -59,7 +59,7 @@ function Register({ navigation }) {
               value={value}
             />
           )}
-          name='email'
+          name="email"
           rules={{
             required: 'Email is required',
             pattern: { value: emailPattern, message: 'Wrong email validation' },
@@ -81,7 +81,7 @@ function Register({ navigation }) {
               value={value}
             />
           )}
-          name='password'
+          name="password"
           rules={{
             required: 'Password is required',
             pattern: {
@@ -107,7 +107,7 @@ function Register({ navigation }) {
               value={value}
             />
           )}
-          name='confirmPassword'
+          name="confirmPassword"
           rules={{
             required: 'Confirm Password is required',
             pattern: {
@@ -124,11 +124,11 @@ function Register({ navigation }) {
         )}
         <Navigator
           navigation={navigation}
-          text='Already has an account? Go to'
-          navigate='Login'
+          text="Already has an account? Go to"
+          navigate="Login"
         />
-        {/* SUBMIT_1 */}
-        <CustomizeButton pressed={handleSubmit(onSubmit)} title='Register' />
+        {/* SUBMIT */}
+        <CustomizeButton pressed={handleSubmit(onSubmit)} title="Register" />
       </View>
     </KeyboardAwareScrollView>
   )
