@@ -13,7 +13,6 @@ function Login({ navigation }) {
     handleSubmit,
     control,
     formState: { errors },
-    watch,
   } = useForm({
     defaultValues: {
       username: '',
