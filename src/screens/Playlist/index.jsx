@@ -1,17 +1,13 @@
 import { View, Text } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import tw from 'twrnc'
-import { useEffect, useState } from 'react'
-import usePermission from 'hooks/usePermission'
+import { useContext } from 'react'
 
+import MusicFileContext from 'context/MusicFileContext'
 import Song from 'components/Song'
 
 function Playlist({ navigation }) {
-  const [audioFiles, setAudioFiles] = useState([])
-  const { getPermissions } = usePermission(setAudioFiles)
-  useEffect(() => {
-    getPermissions()
-  }, [])
+  const { audioFiles } = useContext(MusicFileContext)
 
   return (
     <KeyboardAwareScrollView style={tw`flex px-8 pt-8`}>
