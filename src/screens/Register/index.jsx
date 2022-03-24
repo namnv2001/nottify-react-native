@@ -127,7 +127,7 @@ function Register({ navigation }) {
           text='Already has an account? Go to'
           navigate='Login'
         />
-        {/* SUBMIT */}
+        {/* SUBMIT_1 */}
         <CustomizeButton pressed={handleSubmit(onSubmit)} title='Register' />
       </View>
     </KeyboardAwareScrollView>
