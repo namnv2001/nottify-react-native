@@ -7,7 +7,16 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "eject": "expo eject"
+    "eject": "expo eject",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,json}": "prettier --single-quote --trailing-comma all --no-semi --tab-width 2 --write"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   },
   "dependencies": {
     "@react-navigation/native": "^6.0.8",
@@ -29,6 +38,8 @@
     "twrnc": "^3.0.2"
   },
   "devDependencies": {
+    "husky": "^7.0.0",
+    "lint-staged": "^12.3.7",
     "@babel/core": "^7.12.9"
   },
   "private": true
