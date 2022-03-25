@@ -8,6 +8,7 @@ import Home from 'screens/Home'
 import Register from 'screens/Register'
 import Login from 'screens/Login'
 import Playlist from 'screens/Playlist'
+import Options from 'screens/Options'
 
 function App() {
   const Stack = createNativeStackNavigator()
@@ -31,6 +32,7 @@ function App() {
           <Stack.Screen name='Login' component={Login} />
           <Stack.Screen name='Home' component={Home} />
           <Stack.Screen name='Playlist' component={Playlist} />
+          <Stack.Screen name='Options' component={Options} />
         </Stack.Navigator>
       </NavigationContainer>
     </MusicFileProvider>

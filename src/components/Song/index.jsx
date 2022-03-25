@@ -1,8 +1,8 @@
-import { View, Text, Image } from 'react-native'
+import { View, Text, Image, TouchableOpacity } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
 import tw from 'twrnc'
 
-function Song(props) {
+function Song({ navigation, data }) {
   //  Object {
   //   "albumId": "461323410",
   //   "creationTime": 0,
@@ -15,25 +15,30 @@ function Song(props) {
   //   "uri": "file:///storage/emulated/0/Notifications/Messenger/Tiếng huýt sáo",
   //   "width": 0,
   // },
-  const { data } = props
 
   return (
     <View style={tw`flex flex-row justify-between items-center py-2`}>
       <View style={tw`flex flex-row items-center`}>
         <Image
-          style={tw`w-10 h-10`}
+          style={tw`w-12 h-12 mr-2`}
           source={require('assets/spotify-app-icon-28.jpg')}
         />
-        <View>
-          <Text style={tw`font-bold text-base`}>{data.filename}</Text>
-          <Text>Author name</Text>
+        <View style={tw`w-9/12`}>
+          <Text style={tw`text-white font-bold text-base`}>
+            {data.filename}
+          </Text>
+          <Text style={tw`text-white`}>Author name</Text>
         </View>
       </View>
-      <View>
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate('Options', { songName: data.filename })
+        }
+      >
         <Text>
-          <Icon name="ellipsis-vertical-outline" size={30} color="#000" />
+          <Icon name="ellipsis-vertical-outline" size={20} color="#fff" />
         </Text>
-      </View>
+      </TouchableOpacity>
     </View>
   )
 }
