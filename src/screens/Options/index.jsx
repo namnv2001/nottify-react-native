@@ -1,4 +1,4 @@
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, Image } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import tw from 'twrnc'
 
@@ -21,7 +21,7 @@ function Options({ route, navigation }) {
     >
       <View style={tw`mx-auto mb-48`}>
         <Image
-          style={tw`w-50 h-50`}
+          style={tw`w-50 h-50 mx-auto`}
           source={require('assets/spotify-app-icon-28.jpg')}
         />
         <Text style={tw`text-center text-white font-bold text-lg`}>

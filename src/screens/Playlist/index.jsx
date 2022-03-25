@@ -15,7 +15,7 @@ function Playlist({ navigation }) {
   }
 
   return (
-    <KeyboardAwareScrollView style={tw`flex px-8 pt-8 bg-gray-800`}>
+    <KeyboardAwareScrollView style={tw`flex px-8 pt-8 bg-neutral-800`}>
       <Image
         style={tw`w-60 h-60 mx-auto my-8`}
         source={require('assets/album-cover.jpg')}
