@@ -19,6 +19,7 @@ function Register({ navigation }) {
       username: '',
       email: '',
       password: '',
+      confirmPassword: '',
     },
   })
   const onSubmit = (data) => console.log(data)
