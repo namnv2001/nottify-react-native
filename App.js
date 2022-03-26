@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react'
 
 import { MusicFileProvider } from 'context/MusicFileContext'
 import usePermission from 'hooks/usePermission'
-import Home from 'screens/Home'
 import Register from 'screens/Register'
 import Login from 'screens/Login'
 import Playlist from 'screens/Playlist'
@@ -31,7 +30,6 @@ function App() {
         >
           <Stack.Screen name='Register' component={Register} />
           <Stack.Screen name='Login' component={Login} />
-          <Stack.Screen name='Home' component={Home} />
           <Stack.Screen name='Playlist' component={Playlist} />
           <Stack.Screen name='Options' component={Options} />
           <Stack.Screen name='Playing' component={Playing} />

@@ -2,7 +2,8 @@ import { View, Text, Image, TouchableOpacity } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
 import tw from 'twrnc'
 
-function Song({ navigation, data }) {
+function Song(props) {
+  const { navigation, data } = props
   //  Object {
   //   "albumId": "461323410",
   //   "creationTime": 0,
@@ -18,7 +19,11 @@ function Song({ navigation, data }) {
 
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate('Playing', { currentSong: data })}
+      onPress={() =>
+        navigation.navigate('Playing', {
+          currentSong: data,
+        })
+      }
       style={tw`flex flex-row justify-between items-center py-2`}
     >
       <View style={tw`flex flex-row items-center`}>
