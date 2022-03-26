@@ -40,8 +40,8 @@ function Playlist({ navigation }) {
       </View>
       <View style={tw`mt-4`}>
         {audioFiles &&
-          audioFiles.map((audioFile, index) => (
-            <Song key={index} navigation={navigation} data={audioFile} />
+          audioFiles.map((audioFile) => (
+            <Song key={audioFile.id} navigation={navigation} data={audioFile} />
           ))}
       </View>
     </KeyboardAwareScrollView>

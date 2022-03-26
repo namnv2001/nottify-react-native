@@ -1,4 +1,5 @@
 import * as MediaLibrary from 'expo-media-library'
+import { Alert } from 'react-native'
 
 function usePermission(setAudioFiles) {
   const getAudioFiles = async () => {
@@ -8,6 +9,19 @@ function usePermission(setAudioFiles) {
       first: media.totalCount,
     })
     setAudioFiles(media.assets)
+  }
+
+  const permissionAlert = () => {
+    Alert.alert('Permission', 'Please allow access to your audio files', [
+      {
+        text: 'Ok',
+        onPress: () => getPermissions(),
+      },
+      {
+        text: 'Cancel',
+        onPress: () => permissionAlert(),
+      },
+    ])
   }
 
   const getPermissions = async () => {
@@ -22,8 +36,7 @@ function usePermission(setAudioFiles) {
       const { status, canAskAgain } =
         await MediaLibrary.requestPermissionsAsync()
       if (status === 'denied' && canAskAgain) {
-        alert('You need to allow access to your media library')
-        getPermissions()
+        permissionAlert()
       }
       if (status === 'granted') {
         getAudioFiles()

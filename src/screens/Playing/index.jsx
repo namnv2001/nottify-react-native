@@ -2,15 +2,57 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import Icon from 'react-native-vector-icons/Ionicons'
 import Slider from '@react-native-community/slider'
+import { useState, useEffect } from 'react'
+import { Audio } from 'expo-av'
 import tw from 'twrnc'
-import { useState } from 'react'
 
 function Playing({ route, navigation }) {
   const [favorite, setFavorite] = useState(true)
   const [shuffle, setShuffle] = useState(true)
   const [repeat, setRepeat] = useState(true)
-  const [play, setPlay] = useState(true)
+  const [play, setPlay] = useState(false)
+  const [firstTime, setFirstTime] = useState(true)
   const { currentSong } = route.params
+
+  const [sound, setSound] = useState()
+
+  const handlePressPlay = async () => {
+    // play
+    if (!play && firstTime) {
+      console.log('Loading sound...')
+      const { sound } = await Audio.Sound.createAsync({ uri: currentSong.uri })
+      setSound(sound)
+      console.log('Playing sound...')
+      await sound.playAsync()
+      setPlay(true)
+      setFirstTime(false)
+    }
+    // resume
+    if (!play && !firstTime) {
+      console.log('Resuming sound...')
+      await sound.playAsync()
+      setPlay(true)
+    }
+    // pause
+    if (play) {
+      console.log('Pausing sound...')
+      await sound.pauseAsync()
+      setPlay(false)
+    }
+  }
+
+  const handlePressNext = () => {
+    console.log('Next')
+  }
+
+  useEffect(() => {
+    return sound
+      ? () => {
+          console.log('Unloading sound!')
+          sound.unloadAsync()
+        }
+      : undefined
+  }, [sound])
 
   return (
     <KeyboardAwareScrollView
@@ -49,8 +91,8 @@ function Playing({ route, navigation }) {
           maximumTrackTintColor="#ccc"
         />
         <View style={tw`flex flex-row items-center justify-between`}>
-          <Text style={styles.time}>0:00</Text>
-          <Text style={styles.time}>12:09</Text>
+          <Text style={styles.time}>0:00 </Text>
+          <Text style={styles.time}>12:09 </Text>
         </View>
       </View>
       {/* CONTROLS */}
@@ -67,13 +109,14 @@ function Playing({ route, navigation }) {
         </TouchableOpacity>
         <TouchableOpacity>
           <Icon
+            onPress={handlePressPlay}
             style={tw`p-4 rounded-full bg-green-500`}
             name={play ? 'pause-outline' : 'play-outline'}
             size={30}
             color="#fff"
           />
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={handlePressNext}>
           <Icon name="play-skip-forward-outline" size={30} color="#fff" />
         </TouchableOpacity>
         <TouchableOpacity>
