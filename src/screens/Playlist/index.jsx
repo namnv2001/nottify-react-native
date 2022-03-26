@@ -15,7 +15,7 @@ function Playlist({ navigation }) {
   }
 
   return (
-    <KeyboardAwareScrollView style={tw`flex px-8 pt-8 bg-gray-800`}>
+    <KeyboardAwareScrollView style={tw`flex px-8 pt-8 bg-neutral-800`}>
       <Image
         style={tw`w-60 h-60 mx-auto my-8`}
         source={require('assets/album-cover.jpg')}
@@ -40,8 +40,8 @@ function Playlist({ navigation }) {
       </View>
       <View style={tw`mt-4`}>
         {audioFiles &&
-          audioFiles.map((audioFile, index) => (
-            <Song key={index} navigation={navigation} data={audioFile} />
+          audioFiles.map((audioFile) => (
+            <Song key={audioFile.id} navigation={navigation} data={audioFile} />
           ))}
       </View>
     </KeyboardAwareScrollView>

@@ -2,7 +2,8 @@ import { View, Text, Image, TouchableOpacity } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
 import tw from 'twrnc'
 
-function Song({ navigation, data }) {
+function Song(props) {
+  const { navigation, data } = props
   //  Object {
   //   "albumId": "461323410",
   //   "creationTime": 0,
@@ -17,7 +18,14 @@ function Song({ navigation, data }) {
   // },
 
   return (
-    <View style={tw`flex flex-row justify-between items-center py-2`}>
+    <TouchableOpacity
+      onPress={() =>
+        navigation.navigate('Playing', {
+          currentSong: data,
+        })
+      }
+      style={tw`flex flex-row justify-between items-center py-2`}
+    >
       <View style={tw`flex flex-row items-center`}>
         <Image
           style={tw`w-12 h-12 mr-2`}
@@ -39,7 +47,7 @@ function Song({ navigation, data }) {
           <Icon name="ellipsis-vertical-outline" size={20} color="#fff" />
         </Text>
       </TouchableOpacity>
-    </View>
+    </TouchableOpacity>
   )
 }
 
