@@ -13,61 +13,12 @@ function Playing({ route, navigation }) {
   const [shuffle, setShuffle] = useState(true)
   const [repeat, setRepeat] = useState(true)
   const [play, setPlay] = useState(false)
-  const [firstTime, setFirstTime] = useState(true)
 
-  const [sound, setSound] = useState()
-
-  const handlePressPlay = async () => {
-    // play
-    if (!play && firstTime) {
-      try {
-        console.log('Loading sound...')
-        const { sound } = await Audio.Sound.createAsync({
-          uri: currentSong.uri,
-        })
-        setSound(sound)
-        console.log('Playing sound...')
-        await sound.playAsync()
-        setPlay(true)
-        setFirstTime(false)
-      } catch (err) {
-        console.log('[Error PLAYING SOUND]: ', err.message)
-      }
-    }
-    // resume
-    if (!play && !firstTime) {
-      try {
-        console.log('Resuming sound...')
-        await sound.playAsync()
-        setPlay(true)
-      } catch (err) {
-        console.log('[Error RESUME SOUND]: ', err.message)
-      }
-    }
-    // pause
-    if (play) {
-      try {
-        console.log('Pausing sound...')
-        await sound.pauseAsync()
-        setPlay(false)
-      } catch (err) {
-        console.log('[Error PAUSE SOUND]: ', err.message)
-      }
-    }
-  }
+  const handlePressPlay = async () => {}
 
   const handlePressNext = () => {
     console.log('Next')
   }
-
-  useEffect(() => {
-    return sound
-      ? () => {
-          console.log('Unloading sound!')
-          sound.unloadAsync()
-        }
-      : undefined
-  }, [sound])
 
   return (
     <KeyboardAwareScrollView

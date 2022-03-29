@@ -8,58 +8,57 @@ import { Audio } from 'expo-av'
 import MusicFileContext from 'context/MusicFileContext'
 import Song from 'components/Song'
 import PlayBox from 'components/PlayBox'
+import { play, pause, resume, playNext } from 'misc/audioController.js'
 
 function Playlist({ navigation }) {
   const { audioFiles } = useContext(MusicFileContext)
-  const [loadedSong, setLoadedSong] = useState()
-  const [playing, setPlaying] = useState(false)
+
+  const [playbackObj, setPlaybackObj] = useState(null)
+  const [soundObj, setSoundObj] = useState(null)
+  const [currentAudio, setCurrentAudio] = useState(null)
 
   const handlePlay = () => {
     console.log('play')
   }
 
-  const handlePressSong = async (thisSong) => {
-    // First time playing
-    if (!loadedSong || (loadedSong && loadedSong.uri !== thisSong.uri)) {
-      if (loadedSong) {
-        console.log('loadedSong uri: ', loadedSong.uri)
-        console.log('thisSong uri: ', thisSong.uri)
-        console.log('Unload current song...')
-        setPlaying(false)
-        await loadedSong.unloadAsync()
-      }
-      try {
-        console.log('Loading sound...')
-        const { sound } = await Audio.Sound.createAsync({
-          uri: thisSong.uri,
-        })
-        setLoadedSong(sound)
-        console.log('Playing sound...')
-        await sound.playAsync()
-        setPlaying(true)
-      } catch (err) {
-        console.log('[Error PLAYING SOUND]: ', err.message)
-      }
+  const handleAudioPress = async (audio) => {
+    // play audio for the first time
+    if (soundObj === null) {
+      const playbackObj = new Audio.Sound()
+      const status = await play(playbackObj, audio.uri)
+      // console.log('status: ', status)
+      setPlaybackObj(playbackObj)
+      setCurrentAudio(audio)
+      setSoundObj(status)
+      return
     }
-    // Pause
-    if (loadedSong && loadedSong.uri === thisSong.uri && playing) {
-      try {
-        console.log('Pausing sound...')
-        await loadedSong.pauseAsync()
-        setPlaying(false)
-      } catch (err) {
-        console.log('[Error PAUSE SOUND]: ', err.message)
-      }
+
+    // pause audio
+    if (
+      soundObj.isLoaded &&
+      soundObj.isPlaying &&
+      currentAudio.id === audio.id
+    ) {
+      const status = await pause(playbackObj)
+      setSoundObj(status)
+      return
     }
-    // Resume
-    if (loadedSong && loadedSong.uri === thisSong.uri && !playing) {
-      try {
-        console.log('Resuming sound...')
-        await loadedSong.playAsync()
-        setPlaying(true)
-      } catch (err) {
-        console.log('[Error RESUME SOUND]: ', err.message)
-      }
+
+    // resume audio
+    if (
+      soundObj.isLoaded &&
+      !soundObj.isPlaying &&
+      currentAudio.id === audio.id
+    ) {
+      const status = await resume(playbackObj)
+      setSoundObj(status)
+    }
+
+    // select another audio
+    if (soundObj.isLoaded && currentAudio.id !== audio.id) {
+      const status = await playNext(playbackObj, audio.uri)
+      setSoundObj(status)
+      setCurrentAudio(audio)
     }
   }
 
@@ -93,7 +92,7 @@ function Playlist({ navigation }) {
           audioFiles.map((audioFile) => (
             <Song
               key={audioFile.id}
-              onPress={() => handlePressSong(audioFile)}
+              onPress={() => handleAudioPress(audioFile)}
               navigation={navigation}
               data={audioFile}
             />
