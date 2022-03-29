@@ -3,7 +3,20 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import tw from 'twrnc'
 
 function Song(props) {
-  const { navigation, data } = props
+  const { navigation, data, onPress } = props
+
+  function formatTime(duration) {
+    var hrs = ~~(duration / 3600)
+    var mins = ~~((duration % 3600) / 60)
+    var secs = ~~duration % 60
+    var ret = ''
+    if (hrs > 0) {
+      ret += '' + hrs + ':' + (mins < 10 ? '0' : '')
+    }
+    ret += '' + mins + ':' + (secs < 10 ? '0' : '')
+    ret += '' + secs
+    return ret
+  }
   //  Object {
   //   "albumId": "461323410",
   //   "creationTime": 0,
@@ -19,11 +32,12 @@ function Song(props) {
 
   return (
     <TouchableOpacity
-      onPress={() =>
-        navigation.navigate('Playing', {
-          currentSong: data,
-        })
-      }
+      // onPress={() =>
+      //   navigation.navigate('Playing', {
+      //     currentSong: data,
+      //   })
+      // }
+      onPress={onPress}
       style={tw`flex flex-row justify-between items-center py-2`}
     >
       <View style={tw`flex flex-row items-center`}>
@@ -35,7 +49,7 @@ function Song(props) {
           <Text style={tw`text-white font-bold text-base`}>
             {data.filename}
           </Text>
-          <Text style={tw`text-white`}>Author name</Text>
+          <Text style={tw`text-white`}>{formatTime(data.duration)}</Text>
         </View>
       </View>
       <TouchableOpacity

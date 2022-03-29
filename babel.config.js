@@ -13,6 +13,7 @@ module.exports = function (api) {
             patterns: './src/patterns',
             hooks: './src/hooks',
             context: './src/context',
+            misc: './src/misc',
           },
         },
       ],
