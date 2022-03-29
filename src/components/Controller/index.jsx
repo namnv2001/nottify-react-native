@@ -7,8 +7,9 @@ function Controller(props) {
   const {
     handlePressNext,
     handlePressPlay,
-    handlePressPause,
-    handlePressResume,
+    handlePressRepeat,
+    handlePressShuffle,
+    fullScreen,
   } = props
 
   const [shuffle, setShuffle] = useState(true)
@@ -16,14 +17,20 @@ function Controller(props) {
   const [play, setPlay] = useState(false)
 
   return (
-    <View style={tw`flex flex-row items-center justify-between`}>
-      <TouchableOpacity>
-        <Icon
-          name="shuffle-outline"
-          size={30}
-          color={shuffle ? '#30fc03' : '#fff'}
-        />
-      </TouchableOpacity>
+    <View
+      style={tw`flex flex-row items-center justify-between ${
+        !fullScreen ? 'w-3/5 mx-auto' : ''
+      }`}
+    >
+      {fullScreen && (
+        <TouchableOpacity>
+          <Icon
+            name="shuffle-outline"
+            size={30}
+            color={shuffle ? '#30fc03' : '#fff'}
+          />
+        </TouchableOpacity>
+      )}
       <TouchableOpacity>
         <Icon name="play-skip-back-outline" size={30} color="#fff" />
       </TouchableOpacity>
@@ -39,13 +46,15 @@ function Controller(props) {
       <TouchableOpacity onPress={handlePressNext}>
         <Icon name="play-skip-forward-outline" size={30} color="#fff" />
       </TouchableOpacity>
-      <TouchableOpacity>
-        <Icon
-          name="repeat-outline"
-          size={30}
-          color={repeat ? '#30fc03' : '#fff'}
-        />
-      </TouchableOpacity>
+      {fullScreen && (
+        <TouchableOpacity>
+          <Icon
+            name="repeat-outline"
+            size={30}
+            color={repeat ? '#30fc03' : '#fff'}
+          />
+        </TouchableOpacity>
+      )}
     </View>
   )
 }

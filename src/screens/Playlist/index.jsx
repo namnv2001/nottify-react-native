@@ -1,8 +1,8 @@
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native'
+import { View, Text, Image, StyleSheet } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import tw from 'twrnc'
 import { useContext, useState } from 'react'
 import { Audio } from 'expo-av'
+import tw from 'twrnc'
 
 import MusicFileContext from 'context/MusicFileContext'
 import Song from 'components/Song'
@@ -55,13 +55,12 @@ function Playlist({ navigation }) {
       const status = await playNext(playbackObj, audio.uri)
       setSoundObj(status)
     }
-    console.log(soundObj)
   }
 
   return (
     <View style={tw`flex relative px-8 bg-neutral-800`}>
       <Image
-        style={tw`w-50 h-50 mx-auto mt-16 mb-8`}
+        style={tw`w-50 h-50 mx-auto mt-8 mb-8`}
         source={require('assets/album-cover.jpg')}
       />
       <View style={tw`flex relative flex-row items-center justify-between`}>
@@ -72,7 +71,7 @@ function Playlist({ navigation }) {
           <Text style={tw`text-white text-base font-bold`}>Username</Text>
         </View>
       </View>
-      <PlayBox songName={currentAudio?.filename || 'Pick a song'} />
+      <PlayBox currentAudio={currentAudio} />
       <KeyboardAwareScrollView style={styles.list}>
         {audioFiles &&
           audioFiles.map((audioFile) => (

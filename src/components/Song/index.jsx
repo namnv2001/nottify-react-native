@@ -21,11 +21,6 @@ function Song(props) {
 
   return (
     <TouchableOpacity
-      // onPress={() =>
-      //   navigation.navigate('Playing', {
-      //     currentSong: data,
-      //   })
-      // }
       onPress={onPress}
       style={tw`flex flex-row justify-between items-center py-2`}
     >

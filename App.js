@@ -1,6 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { useState, useEffect } from 'react'
+import { StatusBar } from 'react-native'
 
 import { MusicFileProvider } from 'context/MusicFileContext'
 import usePermission from 'hooks/usePermission'
@@ -21,6 +22,7 @@ function App() {
 
   return (
     <MusicFileProvider value={{ audioFiles, setAudioFiles }}>
+      <StatusBar />
       <NavigationContainer>
         <Stack.Navigator
           initialRouteName='Playlist'
