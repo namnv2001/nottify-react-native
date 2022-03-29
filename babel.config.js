@@ -14,6 +14,7 @@ module.exports = function (api) {
             hooks: './src/hooks',
             context: './src/context',
             misc: './src/misc',
+            helpers: './src/helpers',
           },
         },
       ],

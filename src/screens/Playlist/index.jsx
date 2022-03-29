@@ -1,14 +1,13 @@
-import { View, Text, Image, TouchableOpacity } from 'react-native'
+import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import tw from 'twrnc'
-import Icon from 'react-native-vector-icons/Ionicons'
 import { useContext, useState } from 'react'
 import { Audio } from 'expo-av'
 
 import MusicFileContext from 'context/MusicFileContext'
 import Song from 'components/Song'
 import PlayBox from 'components/PlayBox'
-import { play, pause, resume, playNext } from 'misc/audioController.js'
+import { play, pause, resume, playNext } from 'misc/audioController'
 
 function Playlist({ navigation }) {
   const { audioFiles } = useContext(MusicFileContext)
@@ -17,18 +16,14 @@ function Playlist({ navigation }) {
   const [soundObj, setSoundObj] = useState(null)
   const [currentAudio, setCurrentAudio] = useState(null)
 
-  const handlePlay = () => {
-    console.log('play')
-  }
-
   const handleAudioPress = async (audio) => {
     // play audio for the first time
     if (soundObj === null) {
       const playbackObj = new Audio.Sound()
+      setCurrentAudio(audio)
       const status = await play(playbackObj, audio.uri)
       // console.log('status: ', status)
       setPlaybackObj(playbackObj)
-      setCurrentAudio(audio)
       setSoundObj(status)
       return
     }
@@ -56,16 +51,17 @@ function Playlist({ navigation }) {
 
     // select another audio
     if (soundObj.isLoaded && currentAudio.id !== audio.id) {
+      setCurrentAudio(audio)
       const status = await playNext(playbackObj, audio.uri)
       setSoundObj(status)
-      setCurrentAudio(audio)
     }
+    console.log(soundObj)
   }
 
   return (
-    <View style={tw`flex relative px-8 pt-8 bg-neutral-800`}>
+    <View style={tw`flex relative px-8 bg-neutral-800`}>
       <Image
-        style={tw`w-60 h-60 mx-auto my-16`}
+        style={tw`w-50 h-50 mx-auto mt-16 mb-8`}
         source={require('assets/album-cover.jpg')}
       />
       <View style={tw`flex relative flex-row items-center justify-between`}>
@@ -75,19 +71,9 @@ function Playlist({ navigation }) {
           </Text>
           <Text style={tw`text-white text-base font-bold`}>Username</Text>
         </View>
-        <View>
-          <TouchableOpacity
-            onPress={handlePlay}
-            style={tw`bg-green-700 p-3 rounded-full`}
-          >
-            <Text>
-              <Icon name="play-outline" size={30} color="#fff" />
-            </Text>
-          </TouchableOpacity>
-        </View>
       </View>
-      <PlayBox />
-      <KeyboardAwareScrollView style={tw`mt-4 overflow-scroll h-96`}>
+      <PlayBox songName={currentAudio?.filename || 'Pick a song'} />
+      <KeyboardAwareScrollView style={styles.list}>
         {audioFiles &&
           audioFiles.map((audioFile) => (
             <Song
@@ -101,5 +87,13 @@ function Playlist({ navigation }) {
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  list: {
+    marginTop: 20,
+    height: 480,
+    overflow: 'scroll',
+  },
+})
 
 export default Playlist

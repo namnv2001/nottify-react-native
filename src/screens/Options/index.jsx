@@ -5,7 +5,7 @@ import tw from 'twrnc'
 import Option from 'components/Option'
 
 function Options({ route, navigation }) {
-  const { songName } = route.params
+  const { data } = route.params
 
   const handleAddFavorite = () => {
     console.log('add favorite')
@@ -19,13 +19,20 @@ function Options({ route, navigation }) {
     <KeyboardAwareScrollView
       style={tw`flex flex-col-reverse px-8 pb-8 bg-gray-800`}
     >
-      <View style={tw`mx-auto mb-48`}>
-        <Image
+      <View style={tw`mx-auto mb-48 items-center`}>
+        {/* <Image
           style={tw`w-50 h-50 mx-auto`}
           source={require('assets/spotify-app-icon-28.jpg')}
-        />
+        /> */}
+        <View style={tw`w-50 h-50 rounded-full bg-gray-500`}>
+          <Text
+            style={tw`text-white font-bold text-9xl text-center leading-normal`}
+          >
+            {data.filename[0]}
+          </Text>
+        </View>
         <Text style={tw`text-center text-white font-bold text-lg`}>
-          {songName}
+          {data.filename}
         </Text>
       </View>
       <View>
