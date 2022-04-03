@@ -1,9 +1,8 @@
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native'
+import Slider from '@react-native-community/slider'
+import { useState } from 'react'
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import Icon from 'react-native-vector-icons/Ionicons'
-import Slider from '@react-native-community/slider'
-import { useState, useEffect } from 'react'
-import { Audio } from 'expo-av'
 import tw from 'twrnc'
 
 function Playing({ route, navigation }) {

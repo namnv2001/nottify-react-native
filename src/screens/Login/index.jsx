@@ -1,12 +1,11 @@
-import { StyleSheet, View, Text, TextInput } from 'react-native'
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { useForm, Controller } from 'react-hook-form'
-import tw from 'twrnc'
-
-import { passwordPattern } from 'patterns/index'
-import CustomizeButton from 'components/CustomizeButton'
 import AppLogo from 'components/AppLogo'
+import CustomizeButton from 'components/CustomizeButton'
 import Navigator from 'components/Navigator'
+import { passwordPattern } from 'patterns/index'
+import { Controller, useForm } from 'react-hook-form'
+import { StyleSheet, Text, TextInput, View } from 'react-native'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import tw from 'twrnc'
 
 function Login({ navigation }) {
   const {

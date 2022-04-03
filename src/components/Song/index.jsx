@@ -1,22 +1,12 @@
-import { View, Text, Image, TouchableOpacity } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
+import { formatTime } from 'helpers/commons'
+import { Text, TouchableOpacity, View } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
 import tw from 'twrnc'
 
 function Song(props) {
-  const { navigation, data, onPress } = props
-
-  function formatTime(duration) {
-    var hrs = ~~(duration / 3600)
-    var mins = ~~((duration % 3600) / 60)
-    var secs = ~~duration % 60
-    var ret = ''
-    if (hrs > 0) {
-      ret += '' + hrs + ':' + (mins < 10 ? '0' : '')
-    }
-    ret += '' + mins + ':' + (secs < 10 ? '0' : '')
-    ret += '' + secs
-    return ret
-  }
+  const { data, onPress } = props
+  const navigation = useNavigation()
   //  Object {
   //   "albumId": "461323410",
   //   "creationTime": 0,
@@ -32,19 +22,17 @@ function Song(props) {
 
   return (
     <TouchableOpacity
-      // onPress={() =>
-      //   navigation.navigate('Playing', {
-      //     currentSong: data,
-      //   })
-      // }
       onPress={onPress}
       style={tw`flex flex-row justify-between items-center py-2`}
     >
       <View style={tw`flex flex-row items-center`}>
-        <Image
-          style={tw`w-12 h-12 mr-2`}
-          source={require('assets/spotify-app-icon-28.jpg')}
-        />
+        <View
+          style={tw`w-12 h-12 rounded-full bg-gray-500 mr-2 flex items-center justify-center`}
+        >
+          <Text style={tw`text-white font-bold text-xl`}>
+            {data.filename[0]}
+          </Text>
+        </View>
         <View style={tw`w-9/12`}>
           <Text style={tw`text-white font-bold text-base`}>
             {data.filename}
@@ -53,9 +41,9 @@ function Song(props) {
         </View>
       </View>
       <TouchableOpacity
-        onPress={() =>
-          navigation.navigate('Options', { songName: data.filename })
-        }
+        onPress={() => {
+          navigation.navigate('Options', { data })
+        }}
       >
         <Text>
           <Icon name="ellipsis-vertical-outline" size={20} color="#fff" />

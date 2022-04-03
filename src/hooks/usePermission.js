@@ -8,6 +8,10 @@ function usePermission(setAudioFiles) {
       mediaType: 'audio',
       first: media.totalCount,
     })
+    // ascending order
+    media.assets.sort((a, b) =>
+      a.filename > b.filename ? 1 : b.filename > a.filename ? -1 : 0,
+    )
     setAudioFiles(media.assets)
   }
 
