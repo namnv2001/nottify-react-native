@@ -1,16 +1,15 @@
-import {
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-} from 'react-native'
-import Icon from 'react-native-vector-icons/Ionicons'
-import { useState } from 'react'
-import tw from 'twrnc'
-
 import Controller from 'components/Controller'
 import Progress from 'components/Progress'
+import { useState } from 'react'
+import {
+  Image,
+  Text,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native'
+import Icon from 'react-native-vector-icons/Ionicons'
+import tw from 'twrnc'
 
 function PlayBox(props) {
   const { currentAudio } = props

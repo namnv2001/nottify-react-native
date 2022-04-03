@@ -1,8 +1,7 @@
-import { View, Text, Image } from 'react-native'
+import Option from 'components/Option'
+import { Text, View } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import tw from 'twrnc'
-
-import Option from 'components/Option'
 
 function Options({ route, navigation }) {
   const { data } = route.params

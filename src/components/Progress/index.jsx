@@ -1,8 +1,7 @@
-import { View, Text, StyleSheet } from 'react-native'
 import Slider from '@react-native-community/slider'
-import tw from 'twrnc'
-
 import { formatTime } from 'helpers/commons'
+import { StyleSheet, Text, View } from 'react-native'
+import tw from 'twrnc'
 
 function Progress(props) {
   const { time, duration } = props

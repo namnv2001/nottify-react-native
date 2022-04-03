@@ -1,4 +1,4 @@
-import { TouchableOpacity, Text } from 'react-native'
+import { Text, TouchableOpacity } from 'react-native'
 import tw from 'twrnc'
 
 function CustomizeButton(props) {

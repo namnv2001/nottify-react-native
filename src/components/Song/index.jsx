@@ -1,11 +1,12 @@
-import { View, Text, TouchableOpacity } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
+import { formatTime } from 'helpers/commons'
+import { Text, TouchableOpacity, View } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
 import tw from 'twrnc'
 
-import { formatTime } from 'helpers/commons'
-
 function Song(props) {
-  const { navigation, data, onPress } = props
+  const { data, onPress } = props
+  const navigation = useNavigation()
   //  Object {
   //   "albumId": "461323410",
   //   "creationTime": 0,
@@ -40,7 +41,9 @@ function Song(props) {
         </View>
       </View>
       <TouchableOpacity
-        onPress={() => navigation.navigate('Options', { data })}
+        onPress={() => {
+          navigation.navigate('Options', { data })
+        }}
       >
         <Text>
           <Icon name="ellipsis-vertical-outline" size={20} color="#fff" />
