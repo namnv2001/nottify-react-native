@@ -12,14 +12,27 @@ import Register from 'screens/Register'
 function App() {
   const Stack = createNativeStackNavigator()
   const [audioFiles, setAudioFiles] = useState([])
-  const { getPermissions } = usePermission(setAudioFiles)
+  const [audioData, setAudioData] = useState([])
+  const [playbackPosition, setPlaybackPosition] = useState(null)
+  const [playbackDuration, setPlaybackDuration] = useState(null)
+  const { getPermissions } = usePermission(setAudioFiles, setAudioData)
 
   useEffect(() => {
     getPermissions()
   }, [])
 
   return (
-    <MusicFileProvider value={{ audioFiles, setAudioFiles }}>
+    <MusicFileProvider
+      value={{
+        audioFiles,
+        setAudioFiles,
+        audioData,
+        playbackDuration,
+        playbackPosition,
+        setPlaybackDuration,
+        setPlaybackPosition,
+      }}
+    >
       <StatusBar showHideTransition='true' />
       <NavigationContainer>
         <Stack.Navigator
@@ -31,7 +44,7 @@ function App() {
           <Stack.Screen name='Register' component={Register} />
           <Stack.Screen name='Login' component={Login} />
           <Stack.Screen name='Home' component={Home} />
-          <Stack.Screen name='Options' component={Options} />
+          {/* <Stack.Screen name='Options' component={Options} /> */}
           {/* <Stack.Screen name='Playing' component={Playing} /> */}
         </Stack.Navigator>
       </NavigationContainer>

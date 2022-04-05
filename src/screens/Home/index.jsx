@@ -6,14 +6,22 @@ import { Audio } from 'expo-av'
 import { screenOptions } from 'helpers/screenOptions'
 import { pause, play, playNext, resume } from 'misc/audioController'
 import { useContext, useState } from 'react'
-import { Dimensions, StyleSheet } from 'react-native'
+import PlayBox from 'components/PlayBox'
 
 function Home() {
-  const { audioFiles } = useContext(MusicFileContext)
+  const { audioFiles, setPlaybackDuration, setPlaybackPosition } =
+    useContext(MusicFileContext)
 
   const [playbackObj, setPlaybackObj] = useState(null)
   const [soundObj, setSoundObj] = useState(null)
   const [currentAudio, setCurrentAudio] = useState(null)
+
+  const onPlaybackStatusUpdate = (playbackStatus) => {
+    if (playbackStatus.isLoaded && playbackStatus.isPlaying) {
+      setPlaybackPosition(playbackStatus.positionMillis)
+      setPlaybackDuration(playbackStatus.durationMillis)
+    }
+  }
 
   const handleAudioPress = async (audio) => {
     // play audio for the first time
@@ -24,7 +32,7 @@ function Home() {
       // console.log('status: ', status)
       setPlaybackObj(playbackObj)
       setSoundObj(status)
-      return
+      return playbackObj.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate)
     }
 
     // pause audio
@@ -60,9 +68,9 @@ function Home() {
 
   return (
     <Tab.Navigator
-      style={styles.container}
       screenOptions={({ route }) => ({
         tabBarIcon: ({ color }) => screenOptions(route, color),
+        headerShown: false,
       })}
     >
       <Tab.Screen
@@ -75,15 +83,13 @@ function Home() {
           />
         )}
       />
+      <Tab.Screen
+        name="Playing"
+        children={() => <PlayBox {...{ currentAudio }} />}
+      />
       <Tab.Screen name="Search" children={() => <OnlineSearch />} />
     </Tab.Navigator>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    width: Dimensions.get('window').width * 0.5,
-  },
-})
 
 export default Home

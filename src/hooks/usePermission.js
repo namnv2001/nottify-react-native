@@ -1,7 +1,7 @@
 import * as MediaLibrary from 'expo-media-library'
 import { Alert } from 'react-native'
 
-function usePermission(setAudioFiles) {
+function usePermission(setAudioFiles, setAudioData) {
   const getAudioFiles = async () => {
     let media = await MediaLibrary.getAssetsAsync({ mediaType: 'audio' })
     media = await MediaLibrary.getAssetsAsync({
@@ -12,6 +12,7 @@ function usePermission(setAudioFiles) {
     media.assets.sort((a, b) =>
       a.filename > b.filename ? 1 : b.filename > a.filename ? -1 : 0,
     )
+    setAudioData(media.assets)
     setAudioFiles(media.assets)
   }
 
