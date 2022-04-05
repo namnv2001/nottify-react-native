@@ -1,14 +1,7 @@
 import Controller from 'components/Controller'
 import Progress from 'components/Progress'
 import { useState } from 'react'
-import {
-  Image,
-  Text,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  View,
-} from 'react-native'
-import Icon from 'react-native-vector-icons/Ionicons'
+import { Image, Text, TouchableWithoutFeedback, View } from 'react-native'
 import tw from 'twrnc'
 
 function PlayBox(props) {
@@ -20,29 +13,28 @@ function PlayBox(props) {
   }
 
   return (
-    <TouchableWithoutFeedback>
+    <TouchableWithoutFeedback onPress={getFullScreen}>
       <View
         style={
           fullScreen
-            ? tw`bg-neutral-800 py-4 flex-col-reverse w-full h-full absolute z-50 left-8 bottom-0 right-0`
-            : tw`bg-neutral-800 py-4 flex-col-reverse w-full absolute z-50 left-8 bottom-0 right-0`
+            ? tw`bg-neutral-800 p-4 rounded-md py-4 flex-col-reverse w-full h-full absolute z-50 left-4 -bottom-1 right-0`
+            : tw`bg-neutral-700 p-4 rounded-md py-4 flex-row-reverse items-center justify-between w-full absolute z-50 left-4 -bottom-1 right-0`
         }
       >
         <Controller fullScreen={fullScreen} />
         {fullScreen && (
           <Progress time={0} duration={currentAudio?.duration || 0} />
         )}
-        <View style={tw`mb-4 flex flex-row justify-between items-center`}>
-          <Text style={tw`text-xl font-bold text-white w-10/12`}>
+        <View style={tw`flex-row items-center`}>
+          <Text
+            style={
+              fullScreen
+                ? tw`text-xl font-bold text-white w-10/12`
+                : tw`text-sm font-bold text-white w-9/12`
+            }
+          >
             {currentAudio?.filename || 'Pick a song'}
           </Text>
-          <TouchableOpacity onPress={getFullScreen} style={tw`w-1/12`}>
-            <Icon
-              name={fullScreen ? 'chevron-down-outline' : 'chevron-up-outline'}
-              size={30}
-              color="#fff"
-            />
-          </TouchableOpacity>
         </View>
         {fullScreen && (
           <View>
