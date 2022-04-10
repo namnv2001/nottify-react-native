@@ -1,11 +1,11 @@
 import { View, Text } from 'react-native'
 
-function Home() {
+function Search() {
   return (
     <View>
-      <Text>This is home </Text>
+      <Text>Search</Text>
     </View>
   )
 }
 
-export default Home
+export default Search

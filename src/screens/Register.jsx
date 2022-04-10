@@ -1,12 +1,13 @@
-import { StyleSheet, View, Text, TextInput } from 'react-native'
+import AppLogo from 'components/AppLogo'
+import CustomizeButton from 'components/CustomizeButton'
+import Navigator from 'components/Navigator'
+import { emailPattern, passwordPattern } from 'patterns/index'
+import { Controller, useForm } from 'react-hook-form'
+import { StyleSheet, Text, TextInput, View } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import { useForm, Controller } from 'react-hook-form'
 import tw from 'twrnc'
 
-import { emailPattern, passwordPattern } from 'patterns/index'
-import CustomizeButton from 'components/CustomizeButton'
-
-function Register() {
+function Register({ navigation }) {
   const {
     handleSubmit,
     control,
@@ -17,12 +18,17 @@ function Register() {
       username: '',
       email: '',
       password: '',
+      confirmPassword: '',
     },
   })
-  const onSubmit = (data) => console.log(data)
+  const onSubmit = (data) => {
+    console.log('data: ', data)
+    navigation.navigate('Home')
+  }
 
   return (
     <KeyboardAwareScrollView style={tw`flex bg-black px-8 pt-8`}>
+      <AppLogo />
       <View>
         {/* USERNAME */}
         <Text style={styles.span}>Username</Text>
@@ -36,7 +42,7 @@ function Register() {
               value={value}
             />
           )}
-          name='username'
+          name="username"
           rules={{
             required: 'Username is required',
           }}
@@ -56,7 +62,7 @@ function Register() {
               value={value}
             />
           )}
-          name='email'
+          name="email"
           rules={{
             required: 'Email is required',
             pattern: { value: emailPattern, message: 'Wrong email validation' },
@@ -71,13 +77,14 @@ function Register() {
           control={control}
           render={({ field: { onChange, onBlur, value } }) => (
             <TextInput
+              secureTextEntry={true}
               style={styles.input}
               onBlur={onBlur}
               onChangeText={(value) => onChange(value)}
               value={value}
             />
           )}
-          name='password'
+          name="password"
           rules={{
             required: 'Password is required',
             pattern: {
@@ -96,13 +103,14 @@ function Register() {
           control={control}
           render={({ field: { onChange, onBlur, value } }) => (
             <TextInput
+              secureTextEntry={true}
               style={styles.input}
               onBlur={onBlur}
               onChangeText={(value) => onChange(value)}
               value={value}
             />
           )}
-          name='confirmPassword'
+          name="confirmPassword"
           rules={{
             required: 'Confirm Password is required',
             pattern: {
@@ -117,11 +125,13 @@ function Register() {
         {errors.confirmPassword && (
           <Text style={styles.error}>{errors.confirmPassword.message}</Text>
         )}
-        <Text style={tw`text-white text-center text-xs my-4`}>
-          Already has an account? Go to Login
-        </Text>
+        <Navigator
+          navigation={navigation}
+          text="Already has an account? Go to"
+          navigate="Login"
+        />
         {/* SUBMIT */}
-        <CustomizeButton pressed={handleSubmit(onSubmit)} title='Submit' />
+        <CustomizeButton pressed={handleSubmit(onSubmit)} title="Register" />
       </View>
     </KeyboardAwareScrollView>
   )
