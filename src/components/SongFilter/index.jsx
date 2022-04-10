@@ -2,17 +2,15 @@ import { useState, useContext } from 'react'
 import { TextInput, View } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
 import tw from 'twrnc'
-import MusicFileContext from 'context/MusicFileContext'
 
 function SongFilter() {
   const [name, setName] = useState('')
-  const { setAudioFiles, audioData } = useContext(MusicFileContext)
 
   const FilterSubmit = () => {
-    const filteredData = audioData.filter((audio) => {
-      return audio.filename.toLowerCase().includes(name.toLowerCase())
-    })
-    return filteredData
+    // const filteredData = audioData.filter((audio) => {
+    //   return audio.filename.toLowerCase().includes(name.toLowerCase())
+    // })
+    // return filteredData
   }
 
   return (

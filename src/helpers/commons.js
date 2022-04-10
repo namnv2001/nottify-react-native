@@ -10,3 +10,5 @@ export const formatTime = (duration) => {
   ret += '' + secs
   return ret
 }
+
+export const getThumbnailText = (filename) => filename[0]
