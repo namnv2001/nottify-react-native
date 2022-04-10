@@ -4,7 +4,8 @@ import { Dimensions, StyleSheet, Text, View } from 'react-native'
 import { LayoutProvider, RecyclerListView } from 'recyclerlistview'
 import AudioListItem from 'components/AudioListItem'
 import OptionModal from 'components/OptionModal'
-import SongFilter from 'components/SongFilter'
+import SearchBar from 'components/SearchBar'
+import { storeAudioForNextOpening } from 'helpers/audio'
 import { pause, play, playNext, resume } from 'misc/audioController'
 import { Audio } from 'expo-av'
 import tw from 'twrnc'
@@ -55,12 +56,40 @@ export class AudioList extends Component {
 }
 */
 
-  setOnPlaybackStatusUpdate = (playbackStatus) => {
+  setOnPlaybackStatusUpdate = async (playbackStatus) => {
     if (playbackStatus.isLoaded && playbackStatus.isPlaying) {
       this.context.updateState(this.context, {
         playbackPosition: playbackStatus.positionMillis,
         playbackDuration: playbackStatus.durationMillis,
       })
+    }
+    // play next song
+    if (playbackStatus.didJustFinish) {
+      try {
+        const nextAudioIndex = this.context.currentAudioIndex + 1
+        // end of playlist -> stop playing
+        if (nextAudioIndex >= this.context.totalAudioCount) {
+          this.context.playbackObj.unloadAsync()
+          this.context.updateState(this.context, {
+            soundObj: null,
+            currentAudio: this.context.audioFiles[0],
+            isPlaying: false,
+            currentAudioIndex: 0,
+            playbackPosition: null,
+            playbackDuration: null,
+          })
+          return await storeAudioForNextOpening(this.context.audioFiles[0], 0)
+        }
+        const nextAudio = this.context.audioFiles[nextAudioIndex]
+        const status = await playNext(this.context.playbackObj, nextAudio.uri)
+        this.context.updateState(this.context, {
+          soundObj: status,
+          currentAudio: nextAudio,
+          isPlaying: true,
+          currentAudioIndex: nextAudioIndex,
+        })
+        await storeAudioForNextOpening(audio, nextAudioIndex)
+      } catch (error) {}
     }
   }
 
@@ -109,9 +138,8 @@ export class AudioList extends Component {
         isPlaying: true,
         currentAudioIndex: index,
       })
-      return playbackObj.setOnPlaybackStatusUpdate(
-        this.setOnPlaybackStatusUpdate,
-      )
+      playbackObj.setOnPlaybackStatusUpdate(this.setOnPlaybackStatusUpdate)
+      return storeAudioForNextOpening(audio, index)
     }
 
     // pause
@@ -138,13 +166,18 @@ export class AudioList extends Component {
     if (soundObj.isLoaded && currentAudio.id !== audio.id) {
       const index = audioFiles.indexOf(audio)
       const status = await playNext(playbackObj, audio.uri)
-      return updateState(this.context, {
+      updateState(this.context, {
         soundObj: status,
         currentAudio: audio,
         isPlaying: true,
         currentAudioIndex: index,
       })
+      return storeAudioForNextOpening(audio, index)
     }
+  }
+
+  componentDidMount() {
+    this.context.loadPreviousAudio()
   }
 
   rowRenderer = (_, item, index, extendedState) => {
@@ -168,6 +201,7 @@ export class AudioList extends Component {
     return (
       <AudioContext.Consumer>
         {({ dataProvider, isPlaying }) => {
+          if (!dataProvider._data.length) return null
           if (dataProvider._size === 0)
             return (
               <View style={styles.container}>
@@ -179,7 +213,7 @@ export class AudioList extends Component {
             )
           return (
             <View style={tw`flex-1 px-8`}>
-              <SongFilter />
+              <SearchBar />
               <RecyclerListView
                 style={{ flex: 1 }}
                 dataProvider={dataProvider}

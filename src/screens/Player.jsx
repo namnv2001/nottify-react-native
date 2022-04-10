@@ -2,7 +2,7 @@ import AppLogo from 'components/AppLogo'
 import Controller from 'components/Controller'
 import Progress from 'components/Progress'
 import { AudioContext } from 'context/AudioProvider'
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import tw from 'twrnc'
 
@@ -17,15 +17,21 @@ function Player() {
     return 0
   }
 
+  useEffect(() => {
+    context.loadPreviousAudio()
+  }, [])
+
+  if (!context.currentAudio) return null
+
   return (
     <View style={tw`px-8 justify-between h-full`}>
-      <Text>{`${context.currentAudioIndex + 1} / ${
-        context.totalAudioCount
+      <Text>{`${context?.currentAudioIndex + 1} / ${
+        context?.totalAudioCount
       }`}</Text>
       <AppLogo />
       <View>
         <Text style={tw`text-lg font-bold`}>
-          {context.currentAudio.filename}
+          {context.currentAudio?.filename}
         </Text>
         <Progress
           {...{

@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import * as MediaLibrary from 'expo-media-library'
 import { Component, createContext } from 'react'
 import { Alert, Text, View } from 'react-native'
@@ -20,6 +21,26 @@ export class AudioProvider extends Component {
       playbackPosition: null,
       playbackDuration: null,
     }
+  }
+
+  loadPreviousAudio = async () => {
+    let previousAudio = await AsyncStorage.getItem('previousAudio')
+    let currentAudio
+    let currentAudioIndex
+    if (previousAudio === null) {
+      currentAudio = this.state.audioFiles[0]
+      currentAudioIndex = 0
+    } else {
+      previousAudio = JSON.parse(previousAudio)
+      currentAudio = previousAudio.audio
+      currentAudioIndex = previousAudio.index
+    }
+
+    this.setState({
+      ...this.state,
+      currentAudio,
+      currentAudioIndex,
+    })
   }
 
   getPermissions = async () => {
@@ -123,12 +144,13 @@ export class AudioProvider extends Component {
           playbackObj,
           soundObj,
           currentAudio,
-          updateState: this.updateState,
           isPlaying,
           currentAudioIndex,
-          totalAudioCount: this.totalAudioCount,
           playbackPosition,
           playbackDuration,
+          updateState: this.updateState,
+          totalAudioCount: this.totalAudioCount,
+          loadPreviousAudio: this.loadPreviousAudio,
         }}
       >
         {this.props.children}
