@@ -36,63 +36,6 @@ export class AudioList extends Component {
     },
   )
 
-  /*  playbackStatus {
-  "androidImplementation": string,
-  "didJustFinish": boolean,
-  "durationMillis": number,
-  "isBuffering": boolean,
-  "isLoaded": boolean,
-  "isLooping": boolean,
-  "isMuted": boolean,
-  "isPlaying": boolean,
-  "playableDurationMillis": number,
-  "positionMillis": number,
-  "progressUpdateIntervalMillis": number,     
-  "rate": number,
-  "shouldCorrectPitch": boolean,
-  "shouldPlay": boolean,
-  "uri": string,        
-  "volume": number,
-}
-*/
-
-  setOnPlaybackStatusUpdate = async (playbackStatus) => {
-    if (playbackStatus.isLoaded && playbackStatus.isPlaying) {
-      this.context.updateState(this.context, {
-        playbackPosition: playbackStatus.positionMillis,
-        playbackDuration: playbackStatus.durationMillis,
-      })
-    }
-    // play next song
-    if (playbackStatus.didJustFinish) {
-      try {
-        const nextAudioIndex = this.context.currentAudioIndex + 1
-        // end of playlist -> stop playing
-        if (nextAudioIndex >= this.context.totalAudioCount) {
-          this.context.playbackObj.unloadAsync()
-          this.context.updateState(this.context, {
-            soundObj: null,
-            currentAudio: this.context.audioFiles[0],
-            isPlaying: false,
-            currentAudioIndex: 0,
-            playbackPosition: null,
-            playbackDuration: null,
-          })
-          return await storeAudioForNextOpening(this.context.audioFiles[0], 0)
-        }
-        const nextAudio = this.context.audioFiles[nextAudioIndex]
-        const status = await playNext(this.context.playbackObj, nextAudio.uri)
-        this.context.updateState(this.context, {
-          soundObj: status,
-          currentAudio: nextAudio,
-          isPlaying: true,
-          currentAudioIndex: nextAudioIndex,
-        })
-        await storeAudioForNextOpening(audio, nextAudioIndex)
-      } catch (error) {}
-    }
-  }
-
   /* type definition
   status: {
     didJustFinish: boolean,
@@ -138,7 +81,8 @@ export class AudioList extends Component {
         isPlaying: true,
         currentAudioIndex: index,
       })
-      playbackObj.setOnPlaybackStatusUpdate(this.setOnPlaybackStatusUpdate)
+      playbackObj.setOnPlaybackStatusUpdate(this.context.onPlaybackStatusUpdate)
+      console.log(this.context.onPlaybackStatusUpdate)
       return storeAudioForNextOpening(audio, index)
     }
 

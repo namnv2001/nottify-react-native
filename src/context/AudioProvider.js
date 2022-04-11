@@ -1,5 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { Audio } from 'expo-av'
 import * as MediaLibrary from 'expo-media-library'
+import { storeAudioForNextOpening } from 'helpers/audio'
+import { playNext } from 'misc/audioController'
 import { Component, createContext } from 'react'
 import { Alert, Text, View } from 'react-native'
 import { DataProvider } from 'recyclerlistview'
@@ -107,8 +110,68 @@ export class AudioProvider extends Component {
     this.setState({ ...prevState, ...newState })
   }
 
+  /*  playbackStatus {
+  "androidImplementation": string,
+  "didJustFinish": boolean,
+  "durationMillis": number,
+  "isBuffering": boolean,
+  "isLoaded": boolean,
+  "isLooping": boolean,
+  "isMuted": boolean,
+  "isPlaying": boolean,
+  "playableDurationMillis": number,
+  "positionMillis": number,
+  "progressUpdateIntervalMillis": number,     
+  "rate": number,
+  "shouldCorrectPitch": boolean,
+  "shouldPlay": boolean,
+  "uri": string,        
+  "volume": number,
+}
+*/
+  onPlaybackStatusUpdate = async (playbackStatus) => {
+    if (playbackStatus.isLoaded && playbackStatus.isPlaying) {
+      this.updateState(this, {
+        playbackPosition: playbackStatus.positionMillis,
+        playbackDuration: playbackStatus.durationMillis,
+      })
+    }
+    // play next song
+    if (playbackStatus.didJustFinish) {
+      try {
+        const nextAudioIndex = this.state.currentAudioIndex + 1
+        // end of playlist -> stop playing
+        if (nextAudioIndex >= this.totalAudioCount) {
+          this.state.playbackObj.unloadAsync()
+          this.updateState(this, {
+            soundObj: null,
+            currentAudio: this.state.audioFiles[0],
+            isPlaying: false,
+            currentAudioIndex: 0,
+            playbackPosition: null,
+            playbackDuration: null,
+          })
+          return await storeAudioForNextOpening(this.state.audioFiles[0], 0)
+        }
+        // else select the next song
+        const audio = this.state.audioFiles[nextAudioIndex]
+        const status = await playNext(this.state.playbackObj, audio.uri)
+        this.updateState(this, {
+          soundObj: status,
+          currentAudio: audio,
+          isPlaying: true,
+          currentAudioIndex: nextAudioIndex,
+        })
+        await storeAudioForNextOpening(audio, nextAudioIndex)
+      } catch (error) {}
+    }
+  }
+
   componentDidMount() {
     this.getPermissions()
+    if (this.state.playbackObj === null) {
+      this.setState({ ...this.state, playbackObj: new Audio.Sound() })
+    }
   }
 
   render() {
@@ -151,6 +214,7 @@ export class AudioProvider extends Component {
           updateState: this.updateState,
           totalAudioCount: this.totalAudioCount,
           loadPreviousAudio: this.loadPreviousAudio,
+          onPlaybackStatusUpdate: this.onPlaybackStatusUpdate,
         }}
       >
         {this.props.children}
