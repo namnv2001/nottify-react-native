@@ -1,6 +1,7 @@
-import { useState, useContext } from 'react'
+import { useContext } from 'react'
 import { TouchableOpacity, View } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
+import { AudioContext } from 'context/AudioProvider'
 import tw from 'twrnc'
 
 function Controller(props) {
@@ -13,12 +14,14 @@ function Controller(props) {
     play,
   } = props
 
-  const [shuffle, setShuffle] = useState(true)
-  const [repeat, setRepeat] = useState(true)
+  const { shuffle, repeat } = useContext(AudioContext)
+
+  // const [shuffle, setShuffle] = useState(true)
+  // const [repeat, setRepeat] = useState(true)
 
   return (
     <View style={tw`flex-row items-center justify-between py-4`}>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={handleShuffle}>
         <Icon
           name="shuffle-outline"
           size={30}
@@ -39,7 +42,7 @@ function Controller(props) {
       <TouchableOpacity onPress={handleNext}>
         <Icon name="play-skip-forward-outline" size={30} color="#fff" />
       </TouchableOpacity>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={handleRepeat}>
         <Icon
           name="repeat-outline"
           size={30}

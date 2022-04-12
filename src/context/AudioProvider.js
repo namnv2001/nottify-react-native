@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Audio } from 'expo-av'
 import * as MediaLibrary from 'expo-media-library'
 import { storeAudioForNextOpening } from 'helpers/audio'
-import { playNext } from 'misc/audioController'
+import { playNext, play } from 'misc/audioController'
 import { Component, createContext } from 'react'
 import { Alert, Text, View } from 'react-native'
 import { DataProvider } from 'recyclerlistview'
@@ -23,6 +23,8 @@ export class AudioProvider extends Component {
       totalAudioCount: 0,
       playbackPosition: null,
       playbackDuration: null,
+      shuffle: false,
+      repeat: false,
     }
   }
 
@@ -136,34 +138,65 @@ export class AudioProvider extends Component {
         playbackDuration: playbackStatus.durationMillis,
       })
     }
-    // play next song
+    // handle after current song ended
     if (playbackStatus.didJustFinish) {
       try {
-        const nextAudioIndex = this.state.currentAudioIndex + 1
-        // end of playlist -> stop playing
-        if (nextAudioIndex >= this.totalAudioCount) {
+        // repeat
+        if (this.state.repeat) {
           this.state.playbackObj.unloadAsync()
+          const audio = this.state.audioFiles[this.state.currentAudioIndex]
+          const status = await play(this.state.playbackObj, audio.uri)
           this.updateState(this, {
-            soundObj: null,
-            currentAudio: this.state.audioFiles[0],
-            isPlaying: false,
-            currentAudioIndex: 0,
-            playbackPosition: null,
-            playbackDuration: null,
+            soundObj: status,
+            currentAudio: audio,
+            isPlaying: true,
+            currentAudioIndex: this.state.currentAudioIndex,
           })
-          return await storeAudioForNextOpening(this.state.audioFiles[0], 0)
+          await storeAudioForNextOpening(audio, this.state.currentAudioIndex)
         }
-        // else select the next song
-        const audio = this.state.audioFiles[nextAudioIndex]
-        const status = await playNext(this.state.playbackObj, audio.uri)
-        this.updateState(this, {
-          soundObj: status,
-          currentAudio: audio,
-          isPlaying: true,
-          currentAudioIndex: nextAudioIndex,
-        })
-        await storeAudioForNextOpening(audio, nextAudioIndex)
-      } catch (error) {}
+        // shuffle
+        else if (this.state.shuffle) {
+          const randomIndex = Math.floor(Math.random() * this.totalAudioCount)
+          const audio = this.state.audioFiles[randomIndex]
+          const status = await playNext(this.state.playbackObj, audio.uri)
+          this.updateState(this, {
+            soundObj: status,
+            currentAudio: audio,
+            isPlaying: true,
+            currentAudioIndex: randomIndex,
+          })
+          await storeAudioForNextOpening(audio, randomIndex)
+        } else {
+          // no shuffle or repeat
+          const nextAudioIndex = this.state.currentAudioIndex + 1
+          // end of playlist -> stop playing
+          if (nextAudioIndex >= this.totalAudioCount) {
+            this.state.playbackObj.unloadAsync()
+            this.updateState(this, {
+              soundObj: null,
+              currentAudio: this.state.audioFiles[0],
+              isPlaying: false,
+              currentAudioIndex: 0,
+              playbackPosition: null,
+              playbackDuration: null,
+            })
+            return await storeAudioForNextOpening(this.state.audioFiles[0], 0)
+          } else {
+            // else select the next song
+            const audio = this.state.audioFiles[nextAudioIndex]
+            const status = await playNext(this.state.playbackObj, audio.uri)
+            this.updateState(this, {
+              soundObj: status,
+              currentAudio: audio,
+              isPlaying: true,
+              currentAudioIndex: nextAudioIndex,
+            })
+            await storeAudioForNextOpening(audio, nextAudioIndex)
+          }
+        }
+      } catch (error) {
+        console.log('Error at onPlaybackStatusUpdate', error.message)
+      }
     }
   }
 
@@ -186,6 +219,8 @@ export class AudioProvider extends Component {
       currentAudioIndex,
       playbackPosition,
       playbackDuration,
+      shuffle,
+      repeat,
     } = this.state
     if (permissionError)
       return (
@@ -211,6 +246,8 @@ export class AudioProvider extends Component {
           currentAudioIndex,
           playbackPosition,
           playbackDuration,
+          shuffle,
+          repeat,
           updateState: this.updateState,
           totalAudioCount: this.totalAudioCount,
           loadPreviousAudio: this.loadPreviousAudio,

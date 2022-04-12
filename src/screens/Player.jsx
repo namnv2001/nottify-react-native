@@ -58,18 +58,21 @@ function Player() {
 
   const handleNext = async () => {
     try {
+      let nextSongIndex
+      if (context.shuffle)
+        nextSongIndex = Math.floor(Math.random() * context.totalAudioCount)
+      else nextSongIndex = context.currentAudioIndex + 1
       const { isLoaded } = await context.playbackObj.getStatusAsync()
-      const isLastAudio =
-        context.currentAudioIndex + 1 === context.totalAudioCount
-      let audio = context.audioFiles[context.currentAudioIndex + 1]
+      const isLastAudio = nextSongIndex === context.totalAudioCount
+      let audio = context.audioFiles[nextSongIndex]
       let index
       let status
       if (!isLoaded && !isLastAudio) {
-        index = context.currentAudioIndex + 1
+        index = nextSongIndex
         status = await play(context.playbackObj, audio.uri)
       }
       if (isLoaded && !isLastAudio) {
-        index = context.currentAudioIndex + 1
+        index = nextSongIndex
         status = await playNext(context.playbackObj, audio.uri)
       }
       if (isLastAudio) {
@@ -93,17 +96,21 @@ function Player() {
 
   const handlePrevious = async () => {
     try {
+      let nextSongIndex
+      if (context.shuffle)
+        nextSongIndex = Math.floor(Math.random() * context.totalAudioCount)
+      else nextSongIndex = context.currentAudioIndex - 1
       const { isLoaded } = await context.playbackObj.getStatusAsync()
       const isFirstAudio = context.currentAudioIndex <= 0
-      let audio = context.audioFiles[context.currentAudioIndex - 1]
+      let audio = context.audioFiles[nextSongIndex]
       let index
       let status
       if (!isLoaded && !isFirstAudio) {
-        index = context.currentAudioIndex - 1
+        index = nextSongIndex
         status = await play(context.playbackObj, audio.uri)
       }
       if (isLoaded && !isFirstAudio) {
-        index = context.currentAudioIndex - 1
+        index = nextSongIndex
         status = await playNext(context.playbackObj, audio.uri)
       }
       if (isFirstAudio) {
@@ -123,6 +130,18 @@ function Player() {
       })
       storeAudioForNextOpening(audio, index)
     } catch (error) {}
+  }
+
+  const handleShuffle = () => {
+    context.updateState(context, {
+      shuffle: !context.shuffle,
+    })
+  }
+
+  const handleRepeat = () => {
+    context.updateState(context, {
+      repeat: !context.repeat,
+    })
   }
 
   if (!context.currentAudio) return null
@@ -150,6 +169,8 @@ function Player() {
             handlePlayPause,
             handleNext,
             handlePrevious,
+            handleShuffle,
+            handleRepeat,
           }}
         />
       </View>
