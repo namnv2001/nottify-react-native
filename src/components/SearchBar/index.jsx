@@ -1,17 +1,12 @@
-import { useState, useContext } from 'react'
+import { useState } from 'react'
 import { TextInput, View } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
 import tw from 'twrnc'
 
-function SongFilter() {
+function SearchBar() {
   const [name, setName] = useState('')
 
-  const FilterSubmit = () => {
-    // const filteredData = audioData.filter((audio) => {
-    //   return audio.filename.toLowerCase().includes(name.toLowerCase())
-    // })
-    // return filteredData
-  }
+  const onSubmit = () => {}
 
   return (
     <View style={tw`relative mt-4`}>
@@ -20,7 +15,7 @@ function SongFilter() {
         placeholder="Enter song name"
         onChangeText={(value) => setName(value)}
         defaultValue={name}
-        // onSubmitEditing={setAudioFiles(FilterSubmit)}
+        onSubmitEditing={onSubmit}
       />
       <Icon
         style={tw`absolute right-0 mt-3 mr-4 text-white`}
@@ -32,4 +27,4 @@ function SongFilter() {
   )
 }
 
-export default SongFilter
+export default SearchBar

@@ -1,46 +1,48 @@
-import { useState } from 'react'
+import { useContext } from 'react'
 import { TouchableOpacity, View } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
+import { AudioContext } from 'context/AudioProvider'
 import tw from 'twrnc'
 
 function Controller(props) {
   const {
-    handlePressNext,
-    handlePressPrevious,
-    handlePressPlay,
-    handlePressRepeat,
-    handlePressShuffle,
+    handleNext,
+    handlePrevious,
+    handlePlayPause,
+    handleRepeat,
+    handleShuffle,
     play,
   } = props
 
-  const [shuffle, setShuffle] = useState(true)
-  const [repeat, setRepeat] = useState(true)
+  const { shuffle, repeat } = useContext(AudioContext)
+
+  // const [shuffle, setShuffle] = useState(true)
+  // const [repeat, setRepeat] = useState(true)
 
   return (
     <View style={tw`flex-row items-center justify-between py-4`}>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={handleShuffle}>
         <Icon
           name="shuffle-outline"
           size={30}
           color={shuffle ? '#30fc03' : '#fff'}
         />
       </TouchableOpacity>
-      <TouchableOpacity onPress={handlePressPrevious}>
+      <TouchableOpacity onPress={handlePrevious}>
         <Icon name="play-skip-back-outline" size={30} color="#fff" />
       </TouchableOpacity>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={handlePlayPause}>
         <Icon
-          onPress={handlePressPlay}
           style={tw`p-4 rounded-full bg-green-500`}
           name={play ? 'pause-outline' : 'play-outline'}
           size={30}
           color="#fff"
         />
       </TouchableOpacity>
-      <TouchableOpacity onPress={handlePressNext}>
+      <TouchableOpacity onPress={handleNext}>
         <Icon name="play-skip-forward-outline" size={30} color="#fff" />
       </TouchableOpacity>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={handleRepeat}>
         <Icon
           name="repeat-outline"
           size={30}
