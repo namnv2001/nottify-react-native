@@ -147,13 +147,13 @@ function Player() {
   if (!context.currentAudio) return null
 
   return (
-    <View style={tw`px-8 justify-between h-full`}>
-      <Text>{`${context?.currentAudioIndex + 1} / ${
-        context?.totalAudioCount
-      }`}</Text>
+    <View style={tw`px-8 bg-neutral-800 justify-between h-full`}>
+      <Text style={tw`text-white mt-4 text-right`}>{`${
+        context?.currentAudioIndex + 1
+      } / ${context?.totalAudioCount}`}</Text>
       <AppLogo />
       <View>
-        <Text style={tw`text-lg font-bold`}>
+        <Text style={tw`text-lg font-bold text-white`}>
           {context.currentAudio?.filename}
         </Text>
         <Progress

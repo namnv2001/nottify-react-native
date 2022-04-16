@@ -15,6 +15,7 @@ module.exports = function (api) {
             context: './src/context',
             misc: './src/misc',
             helpers: './src/helpers',
+            navigation: './src/navigation',
           },
         },
       ],

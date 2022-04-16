@@ -15,9 +15,11 @@ function OptionModal(props) {
   return (
     <Modal visible={visible} transparent animationType="slide">
       <View
-        style={tw`absolute bottom-0 bg-neutral-500 w-full px-8 py-4 rounded-t-3xl z-50`}
+        style={tw`absolute bottom-0 bg-neutral-800 w-full px-8 py-4 rounded-t-3xl z-50`}
       >
-        <Text style={tw`text-lg font-bold`}>{currentItem.filename}</Text>
+        <Text style={tw`text-lg text-white font-bold`}>
+          {currentItem.filename}
+        </Text>
         <View>
           <TouchableWithoutFeedback onPress={onPlayPressed}>
             <View style={styles.container}>
@@ -35,7 +37,7 @@ function OptionModal(props) {
       </View>
       <TouchableWithoutFeedback onPress={onClose}>
         <View
-          style={tw`absolute bg-neutral-100 bg-opacity-50 top-0 bottom-0 left-0 right-0`}
+          style={tw`absolute bg-neutral-400 bg-opacity-50 top-0 bottom-0 left-0 right-0`}
         />
       </TouchableWithoutFeedback>
     </Modal>
