@@ -156,7 +156,7 @@ export class AudioList extends Component {
               </View>
             )
           return (
-            <View style={tw`flex-1 px-8`}>
+            <View style={tw`flex-1 px-8 bg-neutral-800`}>
               <SearchBar />
               <RecyclerListView
                 style={{ flex: 1 }}
@@ -170,7 +170,10 @@ export class AudioList extends Component {
                   console.log('play')
                 }}
                 onPlaylistPressed={() => {
-                  console.log('playlist')
+                  this.context.updateState(this.context, {
+                    addToPlaylist: this.currentItem,
+                  })
+                  this.props.navigation.navigate('Playlist')
                 }}
                 currentItem={this.currentItem}
                 onClose={() =>

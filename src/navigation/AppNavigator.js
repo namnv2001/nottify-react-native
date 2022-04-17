@@ -5,6 +5,7 @@ import Player from 'screens/Player'
 import Playlist from 'screens/Playlist'
 import Search from 'screens/Search'
 import Settings from 'screens/Settings'
+import tw from 'twrnc'
 
 const Tab = createBottomTabNavigator()
 
@@ -14,6 +15,8 @@ function AppNavigator() {
       screenOptions={({ route }) => ({
         tabBarIcon: ({ color }) => screenOptions(route, color),
         headerShown: false,
+        tabBarStyle: tw`bg-black`,
+        tabBarActiveTintColor: '#22C55E',
       })}
     >
       <Tab.Screen name="AudioList" component={AudioList} />

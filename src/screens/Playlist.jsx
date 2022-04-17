@@ -1,19 +1,152 @@
-import { View, Text, StyleSheet } from 'react-native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import PlaylistDetail from 'components/PlaylistDetail'
+import PlaylistInputModal from 'components/PlaylistInputModal'
+import { AudioContext } from 'context/AudioProvider'
+import { useContext, useEffect, useState } from 'react'
+import { Alert, ScrollView, Text, TouchableOpacity } from 'react-native'
+import Icon from 'react-native-vector-icons/Ionicons'
+import tw from 'twrnc'
+
+let selectedPlaylist = {}
 
 function Playlist() {
+  const [modalVisible, setModalVisible] = useState(false)
+  const [showPlaylist, setShowPlaylist] = useState(false)
+
+  const context = useContext(AudioContext)
+  const { playlist, addToPlaylist, updateState } = context
+
+  const closeModal = () => setModalVisible(false)
+
+  const createPlaylist = async (playlistName) => {
+    const result = await AsyncStorage.getItem('playlist')
+    if (result !== null) {
+      const audios = []
+      if (addToPlaylist) {
+        audios.push(addToPlaylist)
+      }
+      const newList = {
+        id: Date.now(),
+        title: playlistName,
+        audios: audios,
+      }
+      const updatedList = [...playlist, newList]
+      updateState(context, { addToPlaylist: null, playlist: updatedList })
+      await AsyncStorage.setItem('playlist', JSON.stringify(updatedList))
+    }
+    closeModal()
+  }
+
+  const renderPlaylist = async () => {
+    const result = await AsyncStorage.getItem('playlist')
+    if (result === null) {
+      const defaultPlaylist = {
+        id: Date.now(),
+        title: 'My favorite',
+        audios: [],
+      }
+      const newPlaylist = [...playlist, defaultPlaylist]
+      updateState(context, { playlist: [...newPlaylist] })
+      return await AsyncStorage.setItem(
+        'playlist',
+        JSON.stringify([...newPlaylist]),
+      )
+    }
+    updateState(context, { playlist: JSON.parse(result) })
+  }
+
+  useEffect(() => {
+    if (!playlist.length) {
+      renderPlaylist()
+    }
+  }, [])
+
+  const handleBannerPress = async (playlist) => {
+    // if there is selected audio, add it to playlist
+    if (addToPlaylist) {
+      const result = await AsyncStorage.getItem('playlist')
+      let oldList = []
+      let updatedList = []
+      let sameAudio = false
+      if (result !== null) {
+        oldList = JSON.parse(result)
+        updatedList = oldList.filter((list) => {
+          if (list.id === playlist.id) {
+            // audio already inside playlist
+            for (let audio of list.audios) {
+              if (audio.id === addToPlaylist.id) {
+                sameAudio = true
+                return
+              }
+            }
+            // update playlist
+            list.audios = [...list.audios, addToPlaylist]
+          }
+          return list
+        })
+      }
+      if (sameAudio) {
+        Alert.alert(
+          'Found same audio',
+          `${addToPlaylist.filename} is already in ${playlist.title}`,
+        )
+        sameAudio = false
+        return updateState(context, { addToPlaylist: null })
+      }
+      updateState(context, { playlist: [...updatedList], addToPlaylist: null })
+      return AsyncStorage.setItem('playlist', JSON.stringify([...updatedList]))
+    }
+    // else, open playlist
+    selectedPlaylist = playlist
+    setShowPlaylist(true)
+  }
+
   return (
-    <View style={styles.container}>
-      <Text>Playlist</Text>
-    </View>
+    <>
+      <ScrollView style={tw`px-8 pt-2 bg-neutral-800`}>
+        {playlist.length
+          ? playlist.map((item) => (
+              <TouchableOpacity
+                key={item.id.toString()}
+                onPress={() => handleBannerPress(item)}
+                style={tw`bg-neutral-400 p-2 rounded-md mb-2`}
+              >
+                <Text style={tw`text-white font-bold text-lg`}>
+                  {item.title}
+                </Text>
+                <Text style={tw`text-gray-300`}>
+                  {`${item.audios.length} ${
+                    item.audios.length > 1 ? 'songs' : 'song'
+                  }`}
+                </Text>
+              </TouchableOpacity>
+            ))
+          : null}
+        <TouchableOpacity
+          onPress={() => setModalVisible(true)}
+          style={tw`p-2 bg-green-500 flex-row items-center rounded-md`}
+        >
+          <Icon name="add-outline" size={30} color={'#fff'} />
+          <Text style={tw`text-white`}>Add new playlist </Text>
+        </TouchableOpacity>
+
+        <PlaylistInputModal
+          {...{
+            visible: modalVisible,
+            onClose: closeModal,
+            onSubmit: createPlaylist,
+          }}
+        />
+      </ScrollView>
+      <PlaylistDetail
+        {...{
+          visible: showPlaylist,
+          playlist: selectedPlaylist,
+          onClose: () => setShowPlaylist(false),
+        }}
+      />
+    </>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-})
 
 export default Playlist
