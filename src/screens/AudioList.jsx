@@ -4,7 +4,8 @@ import { Dimensions, StyleSheet, Text, View } from 'react-native'
 import { LayoutProvider, RecyclerListView } from 'recyclerlistview'
 import AudioListItem from 'components/AudioListItem'
 import OptionModal from 'components/OptionModal'
-import SongFilter from 'components/SongFilter'
+import SearchBar from 'components/SearchBar'
+import { storeAudioForNextOpening } from 'helpers/audio'
 import { pause, play, playNext, resume } from 'misc/audioController'
 import { Audio } from 'expo-av'
 import tw from 'twrnc'
@@ -34,35 +35,6 @@ export class AudioList extends Component {
       }
     },
   )
-
-  /*  playbackStatus {
-  "androidImplementation": string,
-  "didJustFinish": boolean,
-  "durationMillis": number,
-  "isBuffering": boolean,
-  "isLoaded": boolean,
-  "isLooping": boolean,
-  "isMuted": boolean,
-  "isPlaying": boolean,
-  "playableDurationMillis": number,
-  "positionMillis": number,
-  "progressUpdateIntervalMillis": number,     
-  "rate": number,
-  "shouldCorrectPitch": boolean,
-  "shouldPlay": boolean,
-  "uri": string,        
-  "volume": number,
-}
-*/
-
-  setOnPlaybackStatusUpdate = (playbackStatus) => {
-    if (playbackStatus.isLoaded && playbackStatus.isPlaying) {
-      this.context.updateState(this.context, {
-        playbackPosition: playbackStatus.positionMillis,
-        playbackDuration: playbackStatus.durationMillis,
-      })
-    }
-  }
 
   /* type definition
   status: {
@@ -109,9 +81,9 @@ export class AudioList extends Component {
         isPlaying: true,
         currentAudioIndex: index,
       })
-      return playbackObj.setOnPlaybackStatusUpdate(
-        this.setOnPlaybackStatusUpdate,
-      )
+      playbackObj.setOnPlaybackStatusUpdate(this.context.onPlaybackStatusUpdate)
+      console.log(this.context.onPlaybackStatusUpdate)
+      return storeAudioForNextOpening(audio, index)
     }
 
     // pause
@@ -138,13 +110,18 @@ export class AudioList extends Component {
     if (soundObj.isLoaded && currentAudio.id !== audio.id) {
       const index = audioFiles.indexOf(audio)
       const status = await playNext(playbackObj, audio.uri)
-      return updateState(this.context, {
+      updateState(this.context, {
         soundObj: status,
         currentAudio: audio,
         isPlaying: true,
         currentAudioIndex: index,
       })
+      return storeAudioForNextOpening(audio, index)
     }
+  }
+
+  componentDidMount() {
+    this.context.loadPreviousAudio()
   }
 
   rowRenderer = (_, item, index, extendedState) => {
@@ -168,6 +145,7 @@ export class AudioList extends Component {
     return (
       <AudioContext.Consumer>
         {({ dataProvider, isPlaying }) => {
+          if (!dataProvider._data.length) return null
           if (dataProvider._size === 0)
             return (
               <View style={styles.container}>
@@ -178,8 +156,8 @@ export class AudioList extends Component {
               </View>
             )
           return (
-            <View style={tw`flex-1 px-8`}>
-              <SongFilter />
+            <View style={tw`flex-1 px-8 bg-neutral-800`}>
+              <SearchBar />
               <RecyclerListView
                 style={{ flex: 1 }}
                 dataProvider={dataProvider}
@@ -192,7 +170,10 @@ export class AudioList extends Component {
                   console.log('play')
                 }}
                 onPlaylistPressed={() => {
-                  console.log('playlist')
+                  this.context.updateState(this.context, {
+                    addToPlaylist: this.currentItem,
+                  })
+                  this.props.navigation.navigate('Playlist')
                 }}
                 currentItem={this.currentItem}
                 onClose={() =>

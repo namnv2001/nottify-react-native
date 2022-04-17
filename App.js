@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { StatusBar } from 'react-native'
 import Login from 'screens/Login'
 import Register from 'screens/Register'
-import AppNavigator from './src/navigation/AppNavigator' // config lai sau
+import AppNavigator from 'navigation/AppNavigator'
 
 function App() {
   const Stack = createNativeStackNavigator()
