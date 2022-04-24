@@ -3,12 +3,13 @@ import Controller from 'components/Controller'
 import Progress from 'components/Progress'
 import { AudioContext } from 'context/AudioProvider'
 import { changeAudio, selectAudio } from 'misc/audioController'
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { Text, View } from 'react-native'
 import tw from 'twrnc'
 
 function Player() {
   const context = useContext(AudioContext)
+  const [currentPosition, setCurrentPosition] = useState(0)
   const { playbackDuration, playbackPosition } = context
 
   const calculateProgressBar = () => {
@@ -63,6 +64,9 @@ function Player() {
             calculateProgressBar,
             time: playbackPosition / 1000,
             duration: playbackDuration / 1000,
+            setCurrentPosition,
+            currentPosition,
+            context,
           }}
         />
         <Controller

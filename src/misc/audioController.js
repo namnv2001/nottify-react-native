@@ -100,7 +100,11 @@ export const selectAudio = async (audio, context) => {
       currentAudio.id === audio.id
     ) {
       const status = await pause(playbackObj)
-      return updateState(context, { soundObj: status, isPlaying: false })
+      return updateState(context, {
+        soundObj: status,
+        isPlaying: false,
+        playbackPosition: status.positionMillis,
+      })
     }
 
     // resume
@@ -126,7 +130,7 @@ export const selectAudio = async (audio, context) => {
       return storeAudioForNextOpening(audio, index)
     }
   } catch (error) {
-    console.log('[Error inside selectAudio method]: ', error.message)
+    console.log('[Error inside selectAudio]: ', error.message)
   }
 }
 
@@ -194,6 +198,27 @@ export const changeAudio = async (context, select) => {
     })
     storeAudioForNextOpening(audio, index)
   } catch (error) {
-    console.log('[Error inside changeAudio method]: ', error.message)
+    console.log('[Error inside changeAudio]: ', error.message)
+  }
+}
+
+export const moveAudio = async (context, value) => {
+  const { soundObj, isPlaying, playbackObj, updateState } = context
+  if (soundObj === null || !isPlaying) return
+  try {
+    const status = await playbackObj.setPositionAsync(
+      Math.floor(soundObj.durationMillis * value),
+    )
+    updateState(context, {
+      soundObj: status,
+      playbackPosition: status.positionMillis,
+    })
+    await resume(playbackObj)
+    updateState(context, {
+      isPlaying: true,
+      playbackPosition: status.positionMillis,
+    })
+  } catch (error) {
+    console.log('[Error inside moveAudio]: ', error.message)
   }
 }
