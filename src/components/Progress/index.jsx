@@ -36,6 +36,7 @@ function Progress(props) {
         }}
         onSlidingComplete={async (value) => {
           await moveAudio(context, value)
+          setCurrentPosition(0)
         }}
       />
       <View style={tw`flex flex-row items-center justify-between`}>
