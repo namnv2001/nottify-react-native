@@ -1,11 +1,11 @@
 import AppLogo from 'components/AppLogo'
 import Controller from 'components/Controller'
-import Progress from 'components/Progress'
 import { AudioContext } from 'context/AudioProvider'
 import { changeAudio, selectAudio } from 'misc/audioController'
 import { useContext, useEffect, useState } from 'react'
 import { Text, View } from 'react-native'
 import tw from 'twrnc'
+import Progress from "../components/Progress";
 
 function Player() {
   const context = useContext(AudioContext)
