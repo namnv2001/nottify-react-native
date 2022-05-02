@@ -6,6 +6,8 @@ import { Controller, useForm } from 'react-hook-form'
 import { StyleSheet, Text, TextInput, View } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import tw from 'twrnc'
+import { useState } from 'react'
+import { authentication } from 'helpers/services'
 
 function Register({ navigation }) {
   const {
@@ -21,9 +23,31 @@ function Register({ navigation }) {
       confirmPassword: '',
     },
   })
-  const onSubmit = (data) => {
-    console.log('data: ', data)
-    navigation.navigate('Home')
+
+  const [usernameExisted, setUsernameExisted] = useState(null)
+  const [emailExisted, setEmailExisted] = useState(null)
+  const onSubmit = async (data) => {
+    // fetch('http://localhost:5000/api/auth/register', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify(data),
+    // })
+    const res = await authentication({ action: 'register', data })
+    console.log(res)
+    if (res.status === 401) {
+      if (res.type === 'username') {
+        setUsernameExisted(res.message)
+      } else if (res.type === 'email') {
+        setEmailExisted(res.message)
+      }
+    } else {
+      setUsernameExisted(null)
+      setEmailExisted(null)
+      console.log('in else')
+      navigation.navigate({ name: 'Login' })
+    }
   }
 
   return (
@@ -38,7 +62,10 @@ function Register({ navigation }) {
             <TextInput
               style={styles.input}
               onBlur={onBlur}
-              onChangeText={(value) => onChange(value)}
+              onChangeText={(value) => {
+                onChange(value)
+                if (usernameExisted) setUsernameExisted(null)
+              }}
               value={value}
             />
           )}
@@ -50,6 +77,7 @@ function Register({ navigation }) {
         {errors.username && (
           <Text style={styles.error}>{errors.username.message}</Text>
         )}
+        {usernameExisted && <Text style={styles.error}>{usernameExisted}</Text>}
         {/* EMAIL */}
         <Text style={styles.span}>Email</Text>
         <Controller
@@ -58,7 +86,10 @@ function Register({ navigation }) {
             <TextInput
               style={styles.input}
               onBlur={onBlur}
-              onChangeText={(value) => onChange(value)}
+              onChangeText={(value) => {
+                onChange(value)
+                if (emailExisted) setEmailExisted(null)
+              }}
               value={value}
             />
           )}
@@ -71,6 +102,7 @@ function Register({ navigation }) {
         {errors.email && (
           <Text style={styles.error}>{errors.email.message}</Text>
         )}
+        {emailExisted && <Text style={styles.error}>{emailExisted}</Text>}
         {/* PASSWORD */}
         <Text style={styles.span}>Password</Text>
         <Controller
