@@ -27,26 +27,22 @@ function Register({ navigation }) {
   const [usernameExisted, setUsernameExisted] = useState(null)
   const [emailExisted, setEmailExisted] = useState(null)
   const onSubmit = async (data) => {
-    // fetch('http://localhost:5000/api/auth/register', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify(data),
-    // })
     const res = await authentication({ action: 'register', data })
-    console.log(res)
-    if (res.status === 401) {
-      if (res.type === 'username') {
-        setUsernameExisted(res.message)
-      } else if (res.type === 'email') {
-        setEmailExisted(res.message)
+    try {
+      if (res.status === 401) {
+        if (res.type === 'username') {
+          setUsernameExisted(res.message)
+        } else if (res.type === 'email') {
+          setEmailExisted(res.message)
+        }
+      } else {
+        setUsernameExisted(null)
+        setEmailExisted(null)
+        console.log('in else')
+        navigation.navigate({ name: 'Login' })
       }
-    } else {
-      setUsernameExisted(null)
-      setEmailExisted(null)
-      console.log('in else')
-      navigation.navigate({ name: 'Login' })
+    } catch (error) {
+      console.log(error.message)
     }
   }
 

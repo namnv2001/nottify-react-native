@@ -27,18 +27,22 @@ function Login({ navigation }) {
 
   const onSubmit = async (data) => {
     const res = await authentication({ action: 'login', data })
-    if (res.status === 401) {
-      if (res.type === 'username') {
-        setWrongUserName(res.message)
-      } else if (res.type === 'password') {
-        setWrongPassword(res.message)
+    try {
+      if (res.status === 401) {
+        if (res.type === 'username') {
+          setWrongUserName(res.message)
+        } else if (res.type === 'password') {
+          setWrongPassword(res.message)
+        }
+      } else {
+        setWrongUserName(null)
+        setWrongPassword(null)
+        appContext.updateState(appContext, {
+          loggedIn: true,
+        })
       }
-    } else {
-      setWrongUserName(null)
-      setWrongPassword(null)
-      appContext.updateState(appContext, {
-        loggedIn: true,
-      })
+    } catch (error) {
+      console.log(error.message)
     }
   }
 

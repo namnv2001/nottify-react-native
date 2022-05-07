@@ -1,9 +1,45 @@
-import { View, Text } from 'react-native'
+import AudioListItem from 'components/AudioListItem'
+import SearchBar from 'components/SearchBar'
+import { zing } from 'helpers/services'
+import { useState } from 'react'
+import { View } from 'react-native'
+import tw from 'twrnc'
 
 function Search() {
+  const [songList, setSongList] = useState([])
+
+  const onSearch = async (event) => {
+    const keyValue = event.nativeEvent.text
+    const res = await zing({ action: 'search', param: keyValue })
+    if (res) setSongList(res.data.songs)
+  }
+
+  const getSong = async (key) => {
+    const res = await zing({ action: 'get-song', param: key })
+    if (res) {
+      try {
+        console.log('fuck this app')
+      } catch (error) {
+        console.log(error.message)
+      }
+    }
+  }
+
   return (
-    <View>
-      <Text>Search</Text>
+    <View style={tw`px-8 bg-neutral-800 h-full`}>
+      <SearchBar {...{ onSubmit: onSearch }} />
+      {songList &&
+        songList.map((song) => (
+          <AudioListItem
+            {...{
+              key: song.encodeId,
+              name: song.title,
+              duration: song.duration,
+              optionPressed: () => {},
+              onAudioPressed: () => getSong(song.encodeId),
+            }}
+          />
+        ))}
     </View>
   )
 }
