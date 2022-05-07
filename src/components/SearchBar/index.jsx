@@ -3,10 +3,9 @@ import { TextInput, View } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
 import tw from 'twrnc'
 
-function SearchBar() {
+function SearchBar(props) {
+  const { onSubmit } = props
   const [name, setName] = useState('')
-
-  const onSubmit = () => {}
 
   return (
     <View style={tw`relative mt-4`}>
