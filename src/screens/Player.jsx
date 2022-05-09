@@ -6,21 +6,28 @@ import { useContext, useEffect, useState } from 'react'
 import { Text, View } from 'react-native'
 import tw from 'twrnc'
 import Progress from "../components/Progress";
+import {formatTime} from "../helpers/commons";
 
 function Player() {
   const context = useContext(AudioContext)
   const [currentPosition, setCurrentPosition] = useState(0)
-  const { playbackDuration, playbackPosition } = context
+  const { playbackDuration, playbackPosition, currentAudio } = context
 
   const calculateProgressBar = () => {
     if (playbackDuration !== null && playbackPosition !== null) {
       return playbackPosition / playbackDuration
     }
-    return 0
+
+    if(currentAudio.lastPosition){
+      return currentAudio.lastPosition / (currentAudio.duration * 1000)
+    }
+    return 0;
   }
+
 
   useEffect(() => {
     context.loadPreviousAudio()
+
   }, [])
 
   const handlePlayPause = async () => {
@@ -47,6 +54,13 @@ function Player() {
     })
   }
 
+  const renderCurrentTime = () => {
+    if(!context.soundObj && currentAudio.lastPosition) {
+      return formatTime(currentAudio.lastPosition / 1000);
+    }
+    return formatTime(playbackPosition / 1000);
+  }
+
   if (!context.currentAudio) return null
 
   return (
@@ -65,7 +79,7 @@ function Player() {
             time: playbackPosition / 1000,
             duration: playbackDuration / 1000,
             setCurrentPosition,
-            currentPosition,
+            currentPosition: currentPosition ? currentPosition: renderCurrentTime(),
             context,
           }}
         />

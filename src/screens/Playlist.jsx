@@ -9,7 +9,8 @@ import tw from 'twrnc'
 
 let selectedPlaylist = {}
 
-function Playlist() {
+function Playlist ({ navigation }) {
+  // console.log(navigation)
   const [modalVisible, setModalVisible] = useState(false)
   const [showPlaylist, setShowPlaylist] = useState(false)
 
@@ -37,29 +38,31 @@ function Playlist() {
     closeModal()
   }
 
-  const renderPlaylist = async () => {
-    const result = await AsyncStorage.getItem('playlist')
+  const renderPlayList = async () => {
+    const result = await AsyncStorage.getItem('playlist');
     if (result === null) {
-      const defaultPlaylist = {
+      const defaultPlayList = {
         id: Date.now(),
-        title: 'My favorite',
+        title: 'My Favorite',
         audios: [],
-      }
-      const newPlaylist = [...playlist, defaultPlaylist]
-      updateState(context, { playlist: [...newPlaylist] })
+      };
+
+      const newPlayList = [...playlist, defaultPlayList];
+      updateState(context, { playlist: [...newPlayList] });
       return await AsyncStorage.setItem(
-        'playlist',
-        JSON.stringify([...newPlaylist]),
-      )
+          'playlist',
+          JSON.stringify([...newPlayList])
+      );
     }
-    updateState(context, { playlist: JSON.parse(result) })
-  }
+
+    updateState(context, { playlist: JSON.parse(result) });
+  };
 
   useEffect(() => {
     if (!playlist.length) {
-      renderPlaylist()
+      renderPlayList();
     }
-  }, [])
+  }, []);
 
   const handleBannerPress = async (playlist) => {
     // if there is selected audio, add it to playlist
@@ -98,7 +101,12 @@ function Playlist() {
     }
     // else, open playlist
     selectedPlaylist = playlist
-    setShowPlaylist(true)
+    // setShowPlaylist(true)
+    try{
+      navigation.navigate('PlayListDetail', playlist);
+    } catch {
+      console.log(1)
+    }
   }
 
   return (

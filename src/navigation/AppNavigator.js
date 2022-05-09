@@ -7,6 +7,7 @@ import Playlist from 'screens/Playlist'
 import Search from 'screens/Search'
 import Settings from 'screens/Settings'
 import tw from 'twrnc'
+import PlaylistDetail from "../screens/PlayListDetail";
 
 const Tab = createBottomTabNavigator()
 const Stack = createStackNavigator()
@@ -14,7 +15,7 @@ const Stack = createStackNavigator()
 const PlayListScreen = () => {
     return <Stack.Navigator screenOptions={{headerShown: false}}>
         <Stack.Screen name='PlayList' component={Playlist}/>
-        <Stack.Screen name='PlayListDetail' component={Playlist}/>
+        <Stack.Screen name='PlayListDetail' component={PlaylistDetail}/>
     </Stack.Navigator>
 }
 
