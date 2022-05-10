@@ -21,18 +21,30 @@ function OptionModal(props) {
           {currentItem.filename}
         </Text>
         <View>
-          {options.map(option => {
+          {options.map(optn => {
             return (
                 <TouchableWithoutFeedback
-                    onPress={option.onPress}
-                    key={option.title}
+                    onPress={optn.onPress}
+                    key={optn.title}
                 >
               <View style={styles.container}>
-                <Icon name={option.iconName} color="#fff" size={24} />
-                <Text style={styles.text}>{option.title} </Text>
+                <Icon name={optn.iconName} color="#fff" size={24} />
+                <Text style={styles.text}>{optn.title} </Text>
               </View>
             </TouchableWithoutFeedback>)
           })}
+          {/*<TouchableWithoutFeedback onPress={onPlayPressed}>*/}
+          {/*  <View style={styles.container}>*/}
+          {/*    <Icon name="play-circle-outline" color="#fff" size={24} />*/}
+          {/*    <Text style={styles.text}>Play </Text>*/}
+          {/*  </View>*/}
+          {/*</TouchableWithoutFeedback>*/}
+          {/*<TouchableWithoutFeedback onPress={onPlaylistPressed}>*/}
+          {/*  <View style={styles.container}>*/}
+          {/*    <Icon name="albums-outline" color="#fff" size={24} />*/}
+          {/*    <Text style={styles.text}>Add to playlist </Text>*/}
+          {/*  </View>*/}
+          {/*</TouchableWithoutFeedback>*/}
         </View>
       </View>
       <TouchableWithoutFeedback onPress={onClose}>

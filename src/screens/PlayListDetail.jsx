@@ -1,10 +1,10 @@
-import AudioListItem from "components/AudioListItem";
+import AudioListItem from "../components/AudioListItem";
 import {TouchableOpacity,FlatList, Text, View} from 'react-native'
 import tw from 'twrnc'
 import {selectAudio} from "../misc/audioController";
 import React, {useContext, useState} from "react";
 import { AudioContext } from 'context/AudioProvider'
-import  OptionModal from  'components/OptionModal'
+import  OptionModal from  '../components/OptionModal'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 function PlaylistDetail(props) {
