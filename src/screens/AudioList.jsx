@@ -60,7 +60,7 @@ export class AudioList extends Component {
     )
   }
 
-  navigateToPlaylist = () =>  {
+  navigateToPlaylist = () => {
     this.context.updateState(this.context, {
       addToPlaylist: this.currentItem,
     })
@@ -92,12 +92,12 @@ export class AudioList extends Component {
               />
               <OptionModal
                 options={[
-                    {
-                      title: 'Add to playlist',
-                      onPress: this.navigateToPlaylist,
-                      iconName: 'albums-outline'
-                    }
-                    ]}
+                  {
+                    title: 'Add to playlist',
+                    onPress: this.navigateToPlaylist,
+                    iconName: 'albums-outline',
+                  },
+                ]}
                 currentItem={this.currentItem}
                 onClose={() =>
                   this.setState({ ...this.state, optionModalVisible: false })

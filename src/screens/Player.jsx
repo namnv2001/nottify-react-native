@@ -5,8 +5,8 @@ import { changeAudio, selectAudio } from 'misc/audioController'
 import { useContext, useEffect, useState } from 'react'
 import { Text, View } from 'react-native'
 import tw from 'twrnc'
-import Progress from "components/Progress";
-import {formatTime} from "helpers/commons";
+import Progress from 'components/Progress'
+import { formatTime } from 'helpers/commons'
 
 function Player() {
   const context = useContext(AudioContext)
@@ -18,16 +18,14 @@ function Player() {
       return playbackPosition / playbackDuration
     }
 
-    if(currentAudio.lastPosition){
+    if (currentAudio.lastPosition) {
       return currentAudio.lastPosition / (currentAudio.duration * 1000)
     }
-    return 0;
+    return 0
   }
-
 
   useEffect(() => {
     context.loadPreviousAudio()
-
   }, [])
 
   const handlePlayPause = async () => {
@@ -55,10 +53,10 @@ function Player() {
   }
 
   const renderCurrentTime = () => {
-    if(!context.soundObj && currentAudio.lastPosition) {
-      return formatTime(currentAudio.lastPosition / 1000);
+    if (!context.soundObj && currentAudio.lastPosition) {
+      return formatTime(currentAudio.lastPosition / 1000)
     }
-    return formatTime(playbackPosition / 1000);
+    return formatTime(playbackPosition / 1000)
   }
 
   if (!context.currentAudio) return null
@@ -79,7 +77,9 @@ function Player() {
             time: playbackPosition / 1000,
             duration: playbackDuration / 1000,
             setCurrentPosition,
-            currentPosition: currentPosition ? currentPosition: renderCurrentTime(),
+            currentPosition: currentPosition
+              ? currentPosition
+              : renderCurrentTime(),
             context,
           }}
         />

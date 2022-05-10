@@ -7,7 +7,7 @@ import { Component, createContext } from 'react'
 import { Alert, Text, View } from 'react-native'
 import { DataProvider } from 'recyclerlistview'
 
-export const AudioContext = createContext(undefined, undefined);
+export const AudioContext = createContext(undefined, undefined)
 export class AudioProvider extends Component {
   constructor(props) {
     super(props)
@@ -145,34 +145,34 @@ export class AudioProvider extends Component {
 
     if (playbackStatus.isLoaded && !playbackStatus.isPlaying) {
       storeAudioForNextOpening(
-          this.state.currentAudio,
-          this.state.currentAudioIndex,
-          playbackStatus.positionMillis
-      );
+        this.state.currentAudio,
+        this.state.currentAudioIndex,
+        playbackStatus.positionMillis,
+      )
     }
     // handle after current song ended
     if (playbackStatus.didJustFinish) {
       if (this.state.isPlayListRunning) {
-        let audio;
+        let audio
         const indexOnPlayList = this.state.activePlayList.audios.findIndex(
-            ({ id }) => id === this.state.currentAudio.id
-        );
-        const nextIndex = indexOnPlayList + 1;
-        audio = this.state.activePlayList.audios[nextIndex];
+          ({ id }) => id === this.state.currentAudio.id,
+        )
+        const nextIndex = indexOnPlayList + 1
+        audio = this.state.activePlayList.audios[nextIndex]
 
-        if (!audio) audio = this.state.activePlayList.audios[0];
+        if (!audio) audio = this.state.activePlayList.audios[0]
 
         const indexOnAllList = this.state.audioFiles.findIndex(
-            ({ id }) => id === audio.id
-        );
+          ({ id }) => id === audio.id,
+        )
 
-        const status = await playNext(this.state.playbackObj, audio.uri);
+        const status = await playNext(this.state.playbackObj, audio.uri)
         return this.updateState(this, {
           soundObj: status,
           isPlaying: true,
           currentAudio: audio,
           currentAudioIndex: indexOnAllList,
-        });
+        })
       }
 
       try {
@@ -259,7 +259,7 @@ export class AudioProvider extends Component {
       playlist,
       addToPlaylist,
       isPlayListRunning,
-      activePlayList
+      activePlayList,
     } = this.state
     if (permissionError)
       return (
