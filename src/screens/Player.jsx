@@ -5,8 +5,8 @@ import { changeAudio, selectAudio } from 'misc/audioController'
 import { useContext, useEffect, useState } from 'react'
 import { Text, View } from 'react-native'
 import tw from 'twrnc'
-import Progress from "../components/Progress";
-import {formatTime} from "../helpers/commons";
+import Progress from "components/Progress";
+import {formatTime} from "helpers/commons";
 
 function Player() {
   const context = useContext(AudioContext)

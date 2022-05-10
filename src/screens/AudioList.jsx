@@ -91,15 +91,6 @@ export class AudioList extends Component {
                 extendedState={{ isPlaying }}
               />
               <OptionModal
-                // onPlayPressed={() => {
-                //   console.log('play')
-                // }}
-                // onPlaylistPressed={() => {
-                //   this.context.updateState(this.context, {
-                //     addToPlaylist: this.currentItem,
-                //   })
-                //   this.props.navigation.navigate('Playlist')
-                // }}
                 options={[
                     {
                       title: 'Add to playlist',

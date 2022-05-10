@@ -7,7 +7,7 @@ import Playlist from 'screens/Playlist'
 import Search from 'screens/Search'
 import Settings from 'screens/Settings'
 import tw from 'twrnc'
-import PlaylistDetail from "../screens/PlayListDetail";
+import PlaylistDetail from "screens/PlayListDetail";
 
 const Tab = createBottomTabNavigator()
 const Stack = createStackNavigator()
