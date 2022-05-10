@@ -10,7 +10,7 @@ import tw from 'twrnc'
 let selectedPlaylist = {}
 
 function Playlist ({ navigation }) {
-  // console.log(navigation)
+
   const [modalVisible, setModalVisible] = useState(false)
   const [showPlaylist, setShowPlaylist] = useState(false)
 
