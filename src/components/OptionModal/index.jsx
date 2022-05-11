@@ -9,8 +9,14 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import tw from 'twrnc'
 
 function OptionModal(props) {
-  const { visible, onClose, currentItem, onPlayPressed, onPlaylistPressed } =
-    props
+  const {
+    visible,
+    onClose,
+    currentItem,
+    options,
+    onPlayPressed,
+    onPlaylistPressed,
+  } = props
 
   return (
     <Modal visible={visible} transparent animationType="slide">
@@ -21,18 +27,19 @@ function OptionModal(props) {
           {currentItem.filename}
         </Text>
         <View>
-          <TouchableWithoutFeedback onPress={onPlayPressed}>
-            <View style={styles.container}>
-              <Icon name="play-circle-outline" color="#fff" size={24} />
-              <Text style={styles.text}>Play </Text>
-            </View>
-          </TouchableWithoutFeedback>
-          <TouchableWithoutFeedback onPress={onPlaylistPressed}>
-            <View style={styles.container}>
-              <Icon name="albums-outline" color="#fff" size={24} />
-              <Text style={styles.text}>Add to playlist </Text>
-            </View>
-          </TouchableWithoutFeedback>
+          {options.map((option) => {
+            return (
+              <TouchableWithoutFeedback
+                onPress={option.onPress}
+                key={option.title}
+              >
+                <View style={styles.container}>
+                  <Icon name={option.iconName} color="#fff" size={24} />
+                  <Text style={styles.text}>{option.title} </Text>
+                </View>
+              </TouchableWithoutFeedback>
+            )
+          })}
         </View>
       </View>
       <TouchableWithoutFeedback onPress={onClose}>

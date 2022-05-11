@@ -1,7 +1,7 @@
-import AudioListItem from "../AudioListItem";
+import AudioListItem from 'components/AudioListItem'
+import { selectAudio } from 'misc/audioController'
 import { FlatList, Modal, Text, View } from 'react-native'
 import tw from 'twrnc'
-import {selectAudio} from "../../misc/audioController";
 
 function PlaylistDetail(props) {
   const { visible, playlist, onClose } = props
@@ -33,7 +33,7 @@ function PlaylistDetail(props) {
               {...{
                 name: item.filename,
                 duration: item.duration,
-                onPress: () => playAudio(item)
+                onPress: () => playAudio(item),
               }}
             />
           )}

@@ -16,9 +16,6 @@ function Controller(props) {
 
   const { shuffle, repeat } = useContext(AudioContext)
 
-  // const [shuffle, setShuffle] = useState(true)
-  // const [repeat, setRepeat] = useState(true)
-
   return (
     <View style={tw`flex-row items-center justify-between py-4`}>
       <TouchableOpacity onPress={handleShuffle}>
