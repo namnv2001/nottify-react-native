@@ -18,6 +18,7 @@ function PlaylistDetail(props) {
     setSelectedItem({})
     setModelVisible(false)
   }
+
   const removeAudio = async () => {
     let isPlaying = context.isPlaying
     let isPlayListRunning = context.isPlayListRunning
@@ -104,13 +105,15 @@ function PlaylistDetail(props) {
     props.navigation.goBack()
   }
 
-  const playAudio = async (audio, context) => {
-    console.log(playlist)
+  const playAudio = async (audio) => {
+    // console.log(playlist)
     await selectAudio(audio, context, {
       activePlayList: playlist,
       isPlayListRunning: true,
+      currentAudioIndex: audio.id,
     })
   }
+
   return (
     <>
       <View
@@ -135,15 +138,14 @@ function PlaylistDetail(props) {
           data={audios}
           style={tw`mx-4`}
           keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item, index }) => (
+          renderItem={({ item }) => (
             <AudioListItem
               {...{
                 name: item.filename,
                 duration: item.duration,
                 isPlaying: context.isPlaying,
-                activeListItem: item.id === context.currentAudio.id,
-                onAudioPressed: () => playAudio(item, context),
-                activeItem: context.currentAudioIndex === index,
+                activeItem: item.id === context.currentAudio.id,
+                onAudioPressed: () => playAudio(item),
                 optionPressed: () => {
                   setSelectedItem(item)
                   setModelVisible(true)

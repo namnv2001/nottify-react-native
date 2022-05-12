@@ -96,11 +96,7 @@ function Playlist({ navigation }) {
       return AsyncStorage.setItem('playlist', JSON.stringify([...updatedList]))
     }
     // else, open PlayListDetail screen
-    try {
-      navigation.navigate('PlayListDetail', playlist)
-    } catch (error) {
-      console.log('Error navigate to PlayListDetail: ', error.message)
-    }
+    navigation.navigate('PlayListDetail', playlist)
   }
 
   return (
