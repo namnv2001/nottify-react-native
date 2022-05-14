@@ -54,7 +54,7 @@ function PlaylistDetail(props) {
 
       AsyncStorage.setItem('playlist', JSON.stringify(updatedPlayLists))
       context.updateState(context, {
-        playList: updatedPlayLists,
+        playlist: updatedPlayLists,
         isPlayListRunning,
         activePlayList,
         playbackPosition,
@@ -93,7 +93,7 @@ function PlaylistDetail(props) {
 
       AsyncStorage.setItem('playlist', JSON.stringify(updatedPlayLists))
       context.updateState(context, {
-        playList: updatedPlayLists,
+        playlist: updatedPlayLists,
         isPlayListRunning,
         activePlayList,
         playbackPosition,
@@ -106,11 +106,9 @@ function PlaylistDetail(props) {
   }
 
   const playAudio = async (audio) => {
-    // console.log(playlist)
     await selectAudio(audio, context, {
       activePlayList: playlist,
       isPlayListRunning: true,
-      currentAudioIndex: audio.id,
     })
   }
 

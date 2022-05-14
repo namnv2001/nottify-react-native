@@ -1,13 +1,17 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import PlaylistInputModal from 'components/PlaylistInputModal'
+import PlaylistDetail from 'components/PlaylistDetail'
 import { AudioContext } from 'context/AudioProvider'
 import { useContext, useEffect, useState } from 'react'
 import { Alert, ScrollView, Text, TouchableOpacity } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
 import tw from 'twrnc'
 
+let selectedPlaylist = {}
+
 function Playlist({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false)
+  const [showPlaylist, setShowPlaylist] = useState(false)
 
   const context = useContext(AudioContext)
   const { playlist, addToPlaylist, updateState } = context
@@ -95,6 +99,7 @@ function Playlist({ navigation }) {
       updateState(context, { playlist: [...updatedList], addToPlaylist: null })
       return AsyncStorage.setItem('playlist', JSON.stringify([...updatedList]))
     }
+    selectedPlaylist = playlist
     // else, open PlayListDetail screen
     navigation.navigate('PlayListDetail', playlist)
   }
@@ -130,6 +135,13 @@ function Playlist({ navigation }) {
           visible: modalVisible,
           onClose: closeModal,
           onSubmit: createPlaylist,
+        }}
+      />
+      <PlaylistDetail
+        {...{
+          visible: showPlaylist,
+          playlist: selectedPlaylist,
+          onClose: () => setShowPlaylist(false),
         }}
       />
     </ScrollView>
