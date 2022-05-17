@@ -3,7 +3,7 @@ import SearchBar from 'components/SearchBar'
 import { zing } from 'helpers/services'
 import { useState } from 'react'
 import { View } from 'react-native'
-import tw from 'twrnc'
+import tw from 'style/tailwind'
 
 function Search() {
   const [songList, setSongList] = useState([])
@@ -26,7 +26,7 @@ function Search() {
   }
 
   return (
-    <View style={tw`px-8 bg-neutral-800 h-full`}>
+    <View style={tw`px-8 bg-secondary h-full`}>
       <SearchBar {...{ onSubmit: onSearch }} />
       {songList &&
         songList.map((song) => (

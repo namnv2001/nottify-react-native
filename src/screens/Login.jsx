@@ -2,13 +2,13 @@ import AppLogo from 'components/AppLogo'
 import CustomizeButton from 'components/CustomizeButton'
 import Navigator from 'components/Navigator'
 import { AppContext } from 'context/AppProvider'
+import { authentication } from 'helpers/services'
 import { passwordPattern } from 'patterns/index'
 import { useContext, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { StyleSheet, Text, TextInput, View } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import tw from 'twrnc'
-import { authentication } from 'helpers/services'
+import tw from 'style/tailwind'
 
 function Login({ navigation }) {
   const {
@@ -47,7 +47,7 @@ function Login({ navigation }) {
   }
 
   return (
-    <KeyboardAwareScrollView style={tw`flex bg-black px-8 pt-8`}>
+    <KeyboardAwareScrollView style={tw`flex bg-primary px-8 pt-8`}>
       <AppLogo />
       <View>
         {/* USERNAME */}

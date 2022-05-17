@@ -6,7 +6,7 @@ import { formatTime } from 'helpers/commons'
 import { changeAudio, selectAudio } from 'misc/audioController'
 import { useContext, useEffect, useState } from 'react'
 import { Text, View } from 'react-native'
-import tw from 'twrnc'
+import tw from 'style/tailwind'
 
 function Player() {
   const context = useContext(AudioContext)
@@ -62,7 +62,7 @@ function Player() {
   if (!context.currentAudio) return null
 
   return (
-    <View style={tw`px-8 bg-neutral-800 justify-between h-full`}>
+    <View style={tw`px-8 bg-secondary justify-between h-full`}>
       <Text style={tw`text-white mt-4 text-right`}>{`${
         context?.currentAudioIndex + 1
       } / ${context?.totalAudioCount}`}</Text>

@@ -7,6 +7,7 @@ export class AppProvider extends Component {
     super(props)
     this.state = {
       loggedIn: true,
+      focusColor: '#4ECCA3',
     }
   }
 
@@ -15,9 +16,11 @@ export class AppProvider extends Component {
   }
 
   render() {
-    const { loggedIn } = this.state
+    const { loggedIn, focusColor } = this.state
     return (
-      <AppContext.Provider value={{ loggedIn, updateState: this.updateState }}>
+      <AppContext.Provider
+        value={{ loggedIn, focusColor, updateState: this.updateState }}
+      >
         {this.props.children}
       </AppContext.Provider>
     )

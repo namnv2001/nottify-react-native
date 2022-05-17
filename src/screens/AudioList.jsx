@@ -1,12 +1,11 @@
 import AudioListItem from 'components/AudioListItem'
 import OptionModal from 'components/OptionModal'
-import SearchBar from 'components/SearchBar'
 import { AudioContext } from 'context/AudioProvider'
 import { selectAudio } from 'misc/audioController'
 import { Component } from 'react'
-import { Dimensions, StyleSheet, Text, View } from 'react-native'
+import { Dimensions, Text, View } from 'react-native'
 import { LayoutProvider, RecyclerListView } from 'recyclerlistview'
-import tw from 'twrnc'
+import tw from 'style/tailwind'
 
 export class AudioList extends Component {
   static contextType = AudioContext
@@ -25,7 +24,7 @@ export class AudioList extends Component {
       switch (type) {
         case 'audio':
           dim.width = Dimensions.get('window').width
-          dim.height = 70
+          dim.height = 90
           break
         default:
           dim.width = 0
@@ -66,36 +65,42 @@ export class AudioList extends Component {
     })
     this.props.navigation.navigate('Playlist')
   }
+
   render() {
     return (
       <AudioContext.Consumer>
         {({ dataProvider, isPlaying }) => {
-          if (!dataProvider._data.length) return null
-          if (dataProvider._size === 0)
+          if (dataProvider._size === 0) {
             return (
-              <View style={styles.container}>
-                <Text style={styles.text}>
+              <View
+                style={tw`bg-secondary flex items-center justify-center text-center h-full`}
+              >
+                <Text style={tw`text-yellow-300 text-2xl`}>
                   Seems like there's no audio file in your device, try search
                   for online songs instead 🐧
                 </Text>
               </View>
             )
+          }
           return (
-            <View style={tw`flex-1 px-8 bg-neutral-800`}>
-              <SearchBar />
+            <View style={tw`flex-1 px-4 bg-secondary`}>
+              <Text style={tw`text-2xl text-center text-white py-2`}>
+                All songs
+              </Text>
               <RecyclerListView
                 style={{ flex: 1 }}
                 dataProvider={dataProvider}
                 layoutProvider={this.layoutProvider}
                 rowRenderer={this.rowRenderer}
                 extendedState={{ isPlaying }}
+                canChangeSize={true}
               />
               <OptionModal
                 options={[
                   {
                     title: 'Add to playlist',
                     onPress: this.navigateToPlaylist,
-                    iconName: 'albums-outline',
+                    iconName: 'albums',
                   },
                 ]}
                 currentItem={this.currentItem}
@@ -111,19 +116,5 @@ export class AudioList extends Component {
     )
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    textAlign: 'center',
-    paddingHorizontal: 20,
-  },
-  text: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-})
 
 export default AudioList
