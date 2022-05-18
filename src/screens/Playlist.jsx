@@ -3,9 +3,9 @@ import PlaylistInputModal from 'components/PlaylistInputModal'
 import PlaylistDetail from 'components/PlaylistDetail'
 import { AudioContext } from 'context/AudioProvider'
 import { useContext, useEffect, useState } from 'react'
-import { Alert, ScrollView, Text, TouchableOpacity } from 'react-native'
+import { View, Alert, ScrollView, Text, TouchableOpacity } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
-import tw from 'twrnc'
+import tw from 'style/tailwind'
 
 let selectedPlaylist = {}
 
@@ -105,30 +105,34 @@ function Playlist({ navigation }) {
   }
 
   return (
-    <ScrollView style={tw`px-8 pt-2 bg-neutral-800`}>
-      {playlist.length
-        ? playlist.map((item) => (
-            <TouchableOpacity
-              key={item.id.toString()}
-              onPress={() => handleBannerPress(item)}
-              style={tw`bg-neutral-400 p-2 rounded-md mb-2`}
-            >
-              <Text style={tw`text-white font-bold text-lg`}>{item.title}</Text>
-              <Text style={tw`text-gray-300`}>
-                {`${item.audios.length} ${
-                  item.audios.length > 1 ? 'songs' : 'song'
-                }`}
-              </Text>
-            </TouchableOpacity>
-          ))
-        : null}
-      <TouchableOpacity
-        onPress={() => setModalVisible(true)}
-        style={tw`p-2 bg-green-500 flex-row items-center rounded-md`}
-      >
-        <Icon name="add-outline" size={30} color={'#fff'} />
-        <Text style={tw`text-white`}>Add new playlist </Text>
-      </TouchableOpacity>
+    <View style={tw`px-8 pt-8 bg-secondary h-full`}>
+      <ScrollView>
+        {playlist.length
+          ? playlist.map((item) => (
+              <TouchableOpacity
+                key={item.id.toString()}
+                onPress={() => handleBannerPress(item)}
+                style={tw`flex flex-row items-center justify-between bg-thirdly px-4 rounded-2xl mb-2`}
+              >
+                <View style={tw`py-10 pl-4`}>
+                  <Text style={tw`text-white font-bold text-xl`}>
+                    {item.title}
+                  </Text>
+                  <Text style={tw`text-gray-300`}>
+                    {`${item.audios.length} ${
+                      item.audios.length > 1 ? 'songs' : 'song'
+                    } `}
+                  </Text>
+                </View>
+                <View
+                  style={tw`overflow-hidden w-32 h-32 items-center justify-center -mr-4`}
+                >
+                  <Icon name="musical-notes" size={150} color="#BDBDBD" />
+                </View>
+              </TouchableOpacity>
+            ))
+          : null}
+      </ScrollView>
 
       <PlaylistInputModal
         {...{
@@ -144,7 +148,13 @@ function Playlist({ navigation }) {
           onClose: () => setShowPlaylist(false),
         }}
       />
-    </ScrollView>
+      <TouchableOpacity
+        onPress={() => setModalVisible(true)}
+        style={tw`p-4 bg-target rounded-full w-16 flex items-center justify-center absolute right-8 bottom-8`}
+      >
+        <Icon name="add" size={30} color={'#fff'} />
+      </TouchableOpacity>
+    </View>
   )
 }
 

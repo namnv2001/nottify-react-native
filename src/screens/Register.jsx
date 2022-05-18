@@ -1,13 +1,13 @@
 import AppLogo from 'components/AppLogo'
 import CustomizeButton from 'components/CustomizeButton'
 import Navigator from 'components/Navigator'
+import { authentication } from 'helpers/services'
 import { emailPattern, passwordPattern } from 'patterns/index'
+import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { StyleSheet, Text, TextInput, View } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import tw from 'twrnc'
-import { useState } from 'react'
-import { authentication } from 'helpers/services'
+import tw from 'style/tailwind'
 
 function Register({ navigation }) {
   const {
@@ -38,7 +38,6 @@ function Register({ navigation }) {
       } else {
         setUsernameExisted(null)
         setEmailExisted(null)
-        console.log('in else')
         navigation.navigate({ name: 'Login' })
       }
     } catch (error) {
@@ -47,7 +46,7 @@ function Register({ navigation }) {
   }
 
   return (
-    <KeyboardAwareScrollView style={tw`flex bg-black px-8 pt-8`}>
+    <KeyboardAwareScrollView style={tw`flex bg-primary px-8 pt-8`}>
       <AppLogo />
       <View>
         {/* USERNAME */}

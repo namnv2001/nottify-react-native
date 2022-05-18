@@ -1,11 +1,19 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import AppLogo from 'components/AppLogo'
 import AudioListItem from 'components/AudioListItem'
 import OptionModal from 'components/OptionModal'
 import { AudioContext } from 'context/AudioProvider'
 import { selectAudio } from 'misc/audioController'
 import React, { useContext, useState } from 'react'
-import { FlatList, Text, TouchableOpacity, View } from 'react-native'
-import tw from 'twrnc'
+import {
+  FlatList,
+  Text,
+  TouchableOpacity,
+  View,
+  SafeAreaView,
+} from 'react-native'
+import Icon from 'react-native-vector-icons/Ionicons'
+import tw from 'style/tailwind'
 
 function PlaylistDetail(props) {
   const context = useContext(AudioContext)
@@ -48,7 +56,6 @@ function PlaylistDetail(props) {
         if (item.id === playlist.id) {
           item.audios = newAudios
         }
-
         return item
       })
 
@@ -112,46 +119,78 @@ function PlaylistDetail(props) {
     })
   }
 
+  const handlePressPlay = () => {
+    if (context.isPlayListRunning) {
+      context.playbackObj.stopAsync()
+      context.playbackObj.unloadAsync()
+      context.updateState(context, {
+        isPlaying: false,
+        isPlayListRunning: false,
+        playbackPosition: 0,
+        soundObj: null,
+      })
+    } else {
+      playAudio(context.currentAudio || audios[0])
+    }
+  }
+
   return (
-    <>
-      <View
-        style={tw`bg-neutral-400 z-50 h-96 absolute bottom-0 left-0 right-0 rounded-t-3xl pt-4 mx-2`}
-      >
+    <View style={tw`bg-secondary h-full`}>
+      <View>
+        <AppLogo />
         <View>
           <Text
-            style={tw`text-white text-center ml-4 capitalize text-3xl font-bold`}
+            style={tw`text-white my-4 text-center capitalize text-3xl font-bold`}
           >
             {playlist.title}
           </Text>
-          <TouchableOpacity onPress={removePlaylist}>
-            <Text
-              style={tw`text-white text-center ml-4 capitalize text-3xl font-bold`}
+          <View style={tw`flex-row items-center justify-between px-4`}>
+            <TouchableOpacity
+              onPress={handlePressPlay}
+              style={tw`flex-row items-center bg-target p-2 rounded-xl px-12`}
             >
-              {' '}
-              Delete{' '}
-            </Text>
-          </TouchableOpacity>
+              <Icon
+                name={context.isPlayListRunning ? 'pause' : 'play'}
+                size={30}
+                color="white"
+              />
+              <Text style={tw`text-white text-lg font-bold ml-2`}>
+                {context.isPlayListRunning ? 'Stop' : 'Play'}{' '}
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={removePlaylist}
+              style={tw`flex-row items-center bg-red-400 p-2 rounded-xl px-10`}
+            >
+              <Icon name="trash" size={30} color="white" />
+              <Text style={tw`text-white text-lg font-bold ml-2`}>Delete </Text>
+            </TouchableOpacity>
+          </View>
         </View>
-        <FlatList
-          data={audios}
-          style={tw`mx-4`}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => (
-            <AudioListItem
-              {...{
-                name: item.filename,
-                duration: item.duration,
-                isPlaying: context.isPlaying,
-                activeItem: item.id === context.currentAudio.id,
-                onAudioPressed: () => playAudio(item),
-                optionPressed: () => {
-                  setSelectedItem(item)
-                  setModelVisible(true)
-                },
-              }}
-            />
-          )}
-        />
+        <SafeAreaView style={tw`mt-3 h-96`}>
+          <FlatList
+            data={audios}
+            style={tw`mx-4`}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) => (
+              <AudioListItem
+                {...{
+                  name: item.filename,
+                  duration: item.duration,
+                  isPlaying: context.isPlaying,
+                  activeItem: item.id === context.currentAudio.id,
+                  onAudioPressed: () => {
+                    playAudio(item)
+                  },
+                  optionPressed: () => {
+                    setSelectedItem(item)
+                    setModelVisible(true)
+                  },
+                }}
+              />
+            )}
+          />
+        </SafeAreaView>
       </View>
       <OptionModal
         visible={modelVisible}
@@ -160,12 +199,12 @@ function PlaylistDetail(props) {
           {
             title: 'Remove from playlist',
             onPress: removeAudio,
-            iconName: 'albums-outline',
+            iconName: 'albums',
           },
         ]}
         currentItem={selectedItem}
       />
-    </>
+    </View>
   )
 }
 
