@@ -1,15 +1,15 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import PlaylistDetail from 'components/PlaylistDetail'
 import PlaylistInputModal from 'components/PlaylistInputModal'
+import PlaylistDetail from 'components/PlaylistDetail'
 import { AudioContext } from 'context/AudioProvider'
 import { useContext, useEffect, useState } from 'react'
-import { Alert, ScrollView, Text, TouchableOpacity } from 'react-native'
+import { View, Alert, ScrollView, Text, TouchableOpacity } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
-import tw from 'twrnc'
+import tw from 'style/tailwind'
 
 let selectedPlaylist = {}
 
-function Playlist() {
+function Playlist({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false)
   const [showPlaylist, setShowPlaylist] = useState(false)
 
@@ -37,29 +37,32 @@ function Playlist() {
     closeModal()
   }
 
-  const renderPlaylist = async () => {
+  const renderPlayLists = async () => {
     const result = await AsyncStorage.getItem('playlist')
     if (result === null) {
-      const defaultPlaylist = {
+      const defaultPlayList = {
         id: Date.now(),
-        title: 'My favorite',
+        title: 'My Favorite',
         audios: [],
       }
-      const newPlaylist = [...playlist, defaultPlaylist]
-      updateState(context, { playlist: [...newPlaylist] })
+
+      const newPlayList = [...playlist, defaultPlayList]
+      updateState(context, { playlist: [...newPlayList] })
       return await AsyncStorage.setItem(
         'playlist',
-        JSON.stringify([...newPlaylist]),
+        JSON.stringify([...newPlayList]),
       )
     }
+
     updateState(context, { playlist: JSON.parse(result) })
   }
 
   useEffect(() => {
     if (!playlist.length) {
-      renderPlaylist()
+      // re-render all playlists
+      renderPlayLists()
     }
-  }, [])
+  }, [playlist.length])
 
   const handleBannerPress = async (playlist) => {
     // if there is selected audio, add it to playlist
@@ -96,48 +99,48 @@ function Playlist() {
       updateState(context, { playlist: [...updatedList], addToPlaylist: null })
       return AsyncStorage.setItem('playlist', JSON.stringify([...updatedList]))
     }
-    // else, open playlist
     selectedPlaylist = playlist
-    setShowPlaylist(true)
+    // else, open PlayListDetail screen
+    navigation.navigate('PlayListDetail', playlist)
   }
 
   return (
-    <>
-      <ScrollView style={tw`px-8 pt-2 bg-neutral-800`}>
+    <View style={tw`px-8 pt-8 bg-secondary h-full`}>
+      <ScrollView>
         {playlist.length
           ? playlist.map((item) => (
               <TouchableOpacity
                 key={item.id.toString()}
                 onPress={() => handleBannerPress(item)}
-                style={tw`bg-neutral-400 p-2 rounded-md mb-2`}
+                style={tw`flex flex-row items-center justify-between bg-thirdly px-4 rounded-2xl mb-2`}
               >
-                <Text style={tw`text-white font-bold text-lg`}>
-                  {item.title}
-                </Text>
-                <Text style={tw`text-gray-300`}>
-                  {`${item.audios.length} ${
-                    item.audios.length > 1 ? 'songs' : 'song'
-                  }`}
-                </Text>
+                <View style={tw`py-10 pl-4`}>
+                  <Text style={tw`text-white font-bold text-xl`}>
+                    {item.title}
+                  </Text>
+                  <Text style={tw`text-gray-300`}>
+                    {`${item.audios.length} ${
+                      item.audios.length > 1 ? 'songs' : 'song'
+                    } `}
+                  </Text>
+                </View>
+                <View
+                  style={tw`overflow-hidden w-32 h-32 items-center justify-center -mr-4`}
+                >
+                  <Icon name="musical-notes" size={150} color="#BDBDBD" />
+                </View>
               </TouchableOpacity>
             ))
           : null}
-        <TouchableOpacity
-          onPress={() => setModalVisible(true)}
-          style={tw`p-2 bg-green-500 flex-row items-center rounded-md`}
-        >
-          <Icon name="add-outline" size={30} color={'#fff'} />
-          <Text style={tw`text-white`}>Add new playlist </Text>
-        </TouchableOpacity>
-
-        <PlaylistInputModal
-          {...{
-            visible: modalVisible,
-            onClose: closeModal,
-            onSubmit: createPlaylist,
-          }}
-        />
       </ScrollView>
+
+      <PlaylistInputModal
+        {...{
+          visible: modalVisible,
+          onClose: closeModal,
+          onSubmit: createPlaylist,
+        }}
+      />
       <PlaylistDetail
         {...{
           visible: showPlaylist,
@@ -145,7 +148,13 @@ function Playlist() {
           onClose: () => setShowPlaylist(false),
         }}
       />
-    </>
+      <TouchableOpacity
+        onPress={() => setModalVisible(true)}
+        style={tw`p-4 bg-target rounded-full w-16 flex items-center justify-center absolute right-8 bottom-8`}
+      >
+        <Icon name="add" size={30} color={'#fff'} />
+      </TouchableOpacity>
+    </View>
   )
 }
 

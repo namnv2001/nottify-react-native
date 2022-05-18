@@ -1,11 +1,13 @@
 import AppLogo from 'components/AppLogo'
 import CustomizeButton from 'components/CustomizeButton'
 import Navigator from 'components/Navigator'
+import { authentication } from 'helpers/services'
 import { emailPattern, passwordPattern } from 'patterns/index'
+import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { StyleSheet, Text, TextInput, View } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import tw from 'twrnc'
+import tw from 'style/tailwind'
 
 function Register({ navigation }) {
   const {
@@ -21,13 +23,30 @@ function Register({ navigation }) {
       confirmPassword: '',
     },
   })
-  const onSubmit = (data) => {
-    console.log('data: ', data)
-    navigation.navigate('Home')
+
+  const [usernameExisted, setUsernameExisted] = useState(null)
+  const [emailExisted, setEmailExisted] = useState(null)
+  const onSubmit = async (data) => {
+    const res = await authentication({ action: 'register', data })
+    try {
+      if (res.status === 401) {
+        if (res.type === 'username') {
+          setUsernameExisted(res.message)
+        } else if (res.type === 'email') {
+          setEmailExisted(res.message)
+        }
+      } else {
+        setUsernameExisted(null)
+        setEmailExisted(null)
+        navigation.navigate({ name: 'Login' })
+      }
+    } catch (error) {
+      console.log(error.message)
+    }
   }
 
   return (
-    <KeyboardAwareScrollView style={tw`flex bg-black px-8 pt-8`}>
+    <KeyboardAwareScrollView style={tw`flex bg-primary px-8 pt-8`}>
       <AppLogo />
       <View>
         {/* USERNAME */}
@@ -38,7 +57,10 @@ function Register({ navigation }) {
             <TextInput
               style={styles.input}
               onBlur={onBlur}
-              onChangeText={(value) => onChange(value)}
+              onChangeText={(value) => {
+                onChange(value)
+                if (usernameExisted) setUsernameExisted(null)
+              }}
               value={value}
             />
           )}
@@ -50,6 +72,7 @@ function Register({ navigation }) {
         {errors.username && (
           <Text style={styles.error}>{errors.username.message}</Text>
         )}
+        {usernameExisted && <Text style={styles.error}>{usernameExisted}</Text>}
         {/* EMAIL */}
         <Text style={styles.span}>Email</Text>
         <Controller
@@ -58,7 +81,10 @@ function Register({ navigation }) {
             <TextInput
               style={styles.input}
               onBlur={onBlur}
-              onChangeText={(value) => onChange(value)}
+              onChangeText={(value) => {
+                onChange(value)
+                if (emailExisted) setEmailExisted(null)
+              }}
               value={value}
             />
           )}
@@ -71,6 +97,7 @@ function Register({ navigation }) {
         {errors.email && (
           <Text style={styles.error}>{errors.email.message}</Text>
         )}
+        {emailExisted && <Text style={styles.error}>{emailExisted}</Text>}
         {/* PASSWORD */}
         <Text style={styles.span}>Password</Text>
         <Controller

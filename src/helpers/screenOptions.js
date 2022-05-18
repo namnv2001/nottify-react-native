@@ -5,22 +5,22 @@ export const screenOptions = (route, color) => {
   let iconName
   switch (route.name) {
     case 'AudioList':
-      iconName = 'musical-notes-outline'
+      iconName = 'musical-notes'
       break
     case 'Player':
-      iconName = 'headset-outline'
+      iconName = 'headset'
       break
     case 'Playlist':
-      iconName = 'radio-outline'
+      iconName = 'radio'
       break
     case 'Search':
-      iconName = 'search-outline'
+      iconName = 'search'
       break
     case 'Settings':
-      iconName = 'settings-outline'
+      iconName = 'settings'
       break
     default:
       break
   }
-  return <Icon name={iconName} color={color} size={24} />
+  return <Icon name={iconName} color={color} size={26} />
 }

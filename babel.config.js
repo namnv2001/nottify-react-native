@@ -16,9 +16,12 @@ module.exports = function (api) {
             misc: './src/misc',
             helpers: './src/helpers',
             navigation: './src/navigation',
+            style: './src/style',
+            images: './src/images',
           },
         },
       ],
+      ['module:react-native-dotenv'],
     ],
   }
 }
