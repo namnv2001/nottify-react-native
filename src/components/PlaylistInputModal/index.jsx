@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { Modal, TextInput, TouchableWithoutFeedback, View } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
 import tw from 'style/tailwind'
