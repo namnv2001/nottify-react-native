@@ -150,12 +150,12 @@ function PlaylistDetail(props) {
               style={tw`flex-row items-center bg-target p-2 rounded-xl px-12`}
             >
               <Icon
-                name={context.isPlayListRunning ? 'pause' : 'play'}
+                name={context.isPlaying ? 'pause' : 'play'}
                 size={30}
                 color="white"
               />
               <Text style={tw`text-white text-lg font-bold ml-2`}>
-                {context.isPlayListRunning ? 'Stop' : 'Play'}{' '}
+                {context.isPlaying ? 'Stop' : 'Play'}{' '}
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
