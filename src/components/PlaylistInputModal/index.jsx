@@ -1,7 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Modal, TextInput, TouchableWithoutFeedback, View } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
-import tw from 'twrnc'
+import tw from 'style/tailwind'
 
 function PlaylistInputModal(props) {
   const { visible, onClose, onSubmit } = props
@@ -20,7 +20,7 @@ function PlaylistInputModal(props) {
   return (
     <Modal visible={visible} animationType="fade" transparent>
       <View
-        style={tw`bg-neutral-800 z-50 absolute bottom-0 left-0 right-0 rounded-t-3xl`}
+        style={tw`bg-secondary z-50 absolute bottom-0 left-0 right-0 rounded-t-3xl`}
       >
         <View style={tw`py-4 px-8`}>
           <TextInput
@@ -29,10 +29,11 @@ function PlaylistInputModal(props) {
             placeholderTextColor={'#D4D4D4'}
             value={playlistName}
             onChangeText={(text) => setPlaylistName(text)}
+            autoFocus={true}
           />
           <Icon
-            style={tw`text-center p-2 bg-green-500 rounded-md`}
-            name="checkmark-outline"
+            style={tw`text-center p-2 bg-target rounded-md`}
+            name="checkmark"
             size={30}
             color="#fff"
             onPress={handleSubmit}
