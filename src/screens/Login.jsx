@@ -39,6 +39,7 @@ function Login({ navigation }) {
         setWrongPassword(null)
         appContext.updateState(appContext, {
           loggedIn: true,
+          username: data.username,
         })
       }
     } catch (error) {
