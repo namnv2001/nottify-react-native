@@ -65,7 +65,7 @@ function Player() {
     <View style={tw`px-8 bg-secondary justify-between h-full`}>
       <Text style={tw`text-white mt-4 text-right`}>{`${
         context?.currentAudioIndex + 1
-      } / ${context?.totalAudioCount}`}</Text>
+      } / ${context?.totalAudioCount || 0}`}</Text>
       <AppLogo />
       <View>
         <Text style={tw`text-lg font-bold text-white`}>
