@@ -42,7 +42,6 @@ function Login({ navigation }) {
           username: data.username,
         })
       }
-      console.log(data)
     } catch (error) {
       console.log(error.message)
     }

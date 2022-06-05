@@ -1,11 +1,9 @@
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import tw from 'style/tailwind';
-import React, {useContext, useState} from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import tw from 'style/tailwind'
+import React, {useContext, useState} from 'react'
 import { authentication } from 'helpers/services'
 import { AppContext } from 'context/AppProvider'
 import Navigator from 'components/Navigator'
-
-
 
 function Settings({navigation}) {
 
