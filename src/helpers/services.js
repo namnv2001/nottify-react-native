@@ -31,7 +31,7 @@ export const zing = async (props) => {
         headers: {
           'Content-Type': 'application/json',
         },
-      }
+      },
     ).then((res) => res.json())
     return response
   } catch (error) {
