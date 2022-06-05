@@ -26,7 +26,7 @@ function Settings({navigation}) {
         }
       } catch (error) {
         console.log(error.message)
-        setLogoutError = error.message;
+        setLogoutError = error.message
       }
     },[])
 
