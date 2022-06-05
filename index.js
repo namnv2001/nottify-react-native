@@ -15,17 +15,17 @@ function Index() {
   return (
     <AudioProvider>
       <NavigationContainer>
-        <StatusBar showHideTransition='true' />
+        <StatusBar showHideTransition="true" />
         {!loggedIn ? (
           <>
             <Stack.Navigator
-              initialRouteName='Register'
+              initialRouteName="Login"
               screenOptions={{
                 headerShown: false,
               }}
             >
-              <Stack.Screen name='Register' component={Register} />
-              <Stack.Screen name='Login' component={Login} />
+              <Stack.Screen name="Register" component={Register} />
+              <Stack.Screen name="Login" component={Login} />
             </Stack.Navigator>
           </>
         ) : (

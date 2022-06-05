@@ -235,8 +235,13 @@ export class AudioProvider extends Component {
     }
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.getPermissions()
+    // settings to play audio in background
+    await Audio.setAudioModeAsync({
+      interruptionModeAndroid: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
+      staysActiveInBackground: true,
+    })
     if (this.state.playbackObj === null) {
       this.setState({ ...this.state, playbackObj: new Audio.Sound() })
     }

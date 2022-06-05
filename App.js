@@ -1,12 +1,16 @@
 import AppProvider from 'context/AppProvider'
 import Index from './index'
+import { registerRootComponent } from 'expo'
+import React from 'react'
 
-function App() {
-  return (
-    <AppProvider>
-      <Index />
-    </AppProvider>
-  )
+class App extends React.Component {
+  render() {
+    return (
+      <AppProvider>
+        <Index />
+      </AppProvider>
+    )
+  }
 }
 
-export default App
+registerRootComponent(App)
