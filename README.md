@@ -4,8 +4,6 @@ This is a simple music app for android using React-Native
 
 ## Features
 
----
-
 - User authentication
 - Load songs from the device
 - Play / Pause / Stop / Next / Previous / Shuffle / Loop / Time navigate
@@ -16,8 +14,6 @@ This is a simple music app for android using React-Native
 
 
 ## Local Deployment
-
----
 
 * You need to run the BE to deploy this app https://github.com/namnv2001/nottify-node
  
@@ -40,7 +36,7 @@ This is a simple music app for android using React-Native
 * Run the app in the development mode. Open http://localhost:19002 to view it in the browser, you can use Android devices or web browser to deploy the project.
 
 ## Libraries and Framework
----
+
 * `react-native`
 * `expo`
 * `expo-av`
@@ -51,15 +47,11 @@ This is a simple music app for android using React-Native
 * `twrnc`
 
 ## Contributors
----
 
 * [Nguyễn Văn Nam](https://github.com/namnv2001)
 * [Trần Hải Ninh](https://github.com/NinhTH01)
 
 ## Screenshots
----
-
-
 
 * Login/Register
 
