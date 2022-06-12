@@ -1,6 +1,6 @@
-# Nottify-React-Native
+# Nottify
 
-This is a simple music app for android using React-Native
+A simple music app for android devices built with react-native
 
 ## Features
 
@@ -29,7 +29,7 @@ This is a simple music app for android using React-Native
 ```
 
 
-* Inside the root directory, you can run some built-in commands:
+* Inside the root directory, you can run this built-in command to start the application:
 ```
     yarn start
 ```
