@@ -67,7 +67,7 @@ This is a simple music app for android using React-Native
 
 
 
-
+<img src="[screen1.png](https://user-images.githubusercontent.com/79095365/173221168-6bbea0ba-4a62-4821-a66d-6e821d8576c4.jpg)" width="256" height="455">
 
 
 ![285722032_358314496220503_5237688955381099004_n](https://user-images.githubusercontent.com/79095365/173221168-6bbea0ba-4a62-4821-a66d-6e821d8576c4.jpg)
