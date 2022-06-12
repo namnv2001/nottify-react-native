@@ -41,14 +41,14 @@ This is a simple music app for android using React-Native
 
 ## Libraries and Framework
 ---
-* react-native
-* expo
-* expo-av
-* expo-media-library
-* react-native-async-storage
-* react-native-permission
-* recyclerlistview
-* twrnc
+* `react-native`
+* `expo`
+* `expo-av`
+* `expo-media-library`
+* `react-native-async-storage`
+* `react-native-permission`
+* `recyclerlistview`
+* `twrnc`
 
 ## Contributors
 ---
