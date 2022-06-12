@@ -1,29 +1,25 @@
 # Nottify-React-Native
 
----
+This is a simple music app for android using React-Native
 
-* This is a simple music app for android using React-Native
-
-# Features
+## Features
 
 ---
 
-* Search online songs (Require Network Permission)
-* Using songs from devices
-* Beautiful UI base on Spotify
-* Play background
-* Play/ Stop/ Pause
-* Previous/ Next
-* Suffle
-* OnComplete/ onDuration/ onCurrentPosition
-* Favourite lists
+- User authentication
+- Load songs from the device
+- Play / Pause / Stop / Next / Previous / Shuffle / Loop / Time navigate
+- Remember the last played song from the previous run
+- Playlist: Add / Remove / Play / Pause songs from playlist
+- Search and play online songs
+- Background playback
 
 
-# Local Deployment
+## Local Deployment
 
 ---
 
-* You need to run the BE to deply this app https://github.com/namnv2001/nottify-node
+* You need to run the BE to deploy this app https://github.com/namnv2001/nottify-node
  
 * Need a env file to start this app
 ```
@@ -43,17 +39,24 @@
 ```
 * Run the app in the development mode. Open http://localhost:19002 to view it in the browser, you can use Android devices or web browser to deploy the project.
 
-# Libraries and Framework
+## Libraries and Framework
+---
+* react-native
+* expo
+* expo-av
+* expo-media-library
+* react-native-async-storage
+* react-native-permission
+* recyclerlistview
+* twrnc
 
+## Contributors
 ---
 
-# Contributors
----
+* [Nguyễn Văn Nam](https://github.com/namnv2001)
+* [Trần Hải Ninh](https://github.com/NinhTH01)
 
-* Nguyễn Văn Nam (https://github.com/namnv2001)
-* Trần Hải Ninh (https://github.com/NinhTH01)
-
-# Screenshots
+## Screenshots
 ---
 
 
